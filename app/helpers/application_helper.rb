@@ -45,7 +45,7 @@ module ApplicationHelper
   end
 
   def default_authorize_path
-    ''
+    user_omniauth_authorize_path(:uapp)
   end
 
   def regexp_parse(s)
