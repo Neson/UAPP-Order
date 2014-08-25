@@ -14,3 +14,9 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore configuration files.
+/config/configuration.yml
+/config/database.yml
+
+.DS_Store
