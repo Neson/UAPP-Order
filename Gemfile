@@ -53,6 +53,7 @@ gem 'nprogress-rails', '~> 0.1.3.1'
 gem 'select2-rails', '~> 3.5.9'
 
 gem 'devise', '~> 3.2.4'
+gem 'omniauth-oauth2', '1.2.0'
 gem 'httparty', '~> 0.13.1'
 
 gem 'mailgunner', '~> 2.0.0'
