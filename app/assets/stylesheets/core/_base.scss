@@ -1,0 +1,13 @@
+a, a:visited {
+	color: $primary-color;
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
+}
+
+small, small > a {
+	font-size: 80%;
+	color: rgba($base-color, .5)
+}

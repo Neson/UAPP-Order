@@ -13,4 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require nprogress
+//= require nprogress-turbolinks
+//= require select2
+//
+//= require lib/regexWithNamedCapturingGroup
+//= require lib/jquery.getCursorPosition
+//= require lib/jquery.caret
+//
+//= require_tree ./pages

@@ -1,0 +1,89 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require normalize-rails
+ *= require select2
+ *= require_self
+ */
+
+// -------------------------------------
+//   Compass
+// -------------------------------------
+
+@import "compass/css3";
+@import "compass/utilities";
+
+// -------------------------------------
+//   Helpers
+// -------------------------------------
+
+@import "core/helpers";
+
+// -------------------------------------
+//   Settings
+// -------------------------------------
+
+@import "settings";
+
+// -------------------------------------
+//   Vendor
+// -------------------------------------
+
+// ----- Semantic UI ----- //
+//
+@import "semantic-ui";
+@import "core/semantic-ui_overrides";
+
+// ----- NProgress ----- //
+
+$nprogress-color: $secondary-color;
+@import 'nprogress';
+@import 'nprogress-bootstrap';
+
+// -------------------------------------
+//   Core
+// -------------------------------------
+
+// ----- Helpers ----- //
+
+@import "core/helpers";
+
+// ----- Typography ----- //
+
+@import "core/base";
+
+// ----- Typography ----- //
+
+@import "core/typography";
+
+// ----- Layout ----- //
+
+@import "core/layout";
+
+// -------------------------------------
+//   Modules
+// -------------------------------------
+
+@import "modules/*";
+
+// -------------------------------------
+//   Pages
+// -------------------------------------
+
+@import "pages/*";
+
+// -------------------------------------
+//   Inbox
+// -------------------------------------
+* {
+	// display: none;
+}
