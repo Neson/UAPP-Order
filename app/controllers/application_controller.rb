@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
 
   def save_page_history
     (session[:page_history] ||= []).unshift request.fullpath
-    session[:page_history].pop if session[:page_history].length > 10
+    session[:page_history].pop if session[:page_history].length > 4
     session[:login_redirect_path] = session[:page_history][1] || root_path
   end
 
