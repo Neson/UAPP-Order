@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :get_app_setting
   before_action :save_page_history
+  before_action :login_control
 
   def doorkeeper_unauthorized_render_options
     {:json => {:error => {:message => "Not authorized", :code => 401}}}
@@ -33,5 +34,15 @@ class ApplicationController < ActionController::Base
     (session[:page_history] ||= []).unshift request.fullpath
     session[:page_history].pop if session[:page_history].length > 10
     session[:login_redirect_path] = session[:page_history][1] || root_path
+  end
+
+  def login_control
+    if cookies[:user_logined].to_s == "true"
+      if !current_user && params[:controller] != 'users/omniauth_callbacks'
+        redirect_to(user_omniauth_authorize_path(:uapp))
+      end
+    elsif !!current_user
+      sign_out current_user
+    end
   end
 end

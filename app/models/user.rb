@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :rememberable, :trackable, :validatable
   devise :omniauthable, :omniauth_providers => [:uapp]
+  devise :timeoutable, :timeout_in => 30.minutes
 
   def avator(size=100)
     # 'https://graph.facebook.com/' + fbid.to_s + '/picture?width=' + size.to_s + '&height=' + size.to_s
