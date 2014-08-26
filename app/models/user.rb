@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   devise :timeoutable, :timeout_in => 30.minutes
 
   def avator(size=100)
-    # 'https://graph.facebook.com/' + fbid.to_s + '/picture?width=' + size.to_s + '&height=' + size.to_s
+    'https://graph.facebook.com/' + fbid.to_s + '/picture?width=' + size.to_s + '&height=' + size.to_s
   end
 
   # def admission_college_name
@@ -31,6 +31,17 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
       user.name = auth.info.name
     end
+
+    user.fbid = auth.info.fbid
+    user.email = auth.info.email
+    user.name = auth.info.name
+    user.gender = auth.info.gender
+    user.mobile_verified = auth.info.mobile_verified
+    user.identity = auth.info.identity
+    user.admission_department_code = auth.info.admission_department_code
+    user.department_code = auth.info.department_code
+    user.admission_department = auth.info.admission_department
+    user.department = auth.info.department
     return user
   end
 end
