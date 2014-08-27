@@ -3,6 +3,18 @@ ActiveAdmin.register Provider do
 
   permit_params :code, :name
 
+  config.sort_order = "code_asc"
+
+  index do
+    selectable_column
+    id_column
+    column :code
+    column :name do |provider|
+      link_to provider.name, admin_provider_path(provider)
+    end
+    actions
+  end
+
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #

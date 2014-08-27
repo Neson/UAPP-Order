@@ -5,6 +5,9 @@ ActiveAdmin.register Staff do
   index do
     selectable_column
     id_column
+    column :username do |staff|
+      link_to staff.username, admin_staff_path(staff)
+    end
     column :email
     column :current_sign_in_at
     column :sign_in_count

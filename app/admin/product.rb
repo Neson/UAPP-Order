@@ -3,6 +3,8 @@ ActiveAdmin.register Product do
 
   permit_params :code, :name, :description, :specification, :image, :original_price, :price, :provider, :provider_id, product_tags_attributes: [:product_id, :tag_id]
 
+  config.sort_order = "code_asc"
+
   index do
     selectable_column
     id_column
@@ -22,7 +24,9 @@ ActiveAdmin.register Product do
       row :id
       row :provider
       row :code
-      row :name
+      row :name do |product|
+        link_to product.name, admin_product_path(product)
+      end
       row :description
       row :specification
       row :original_price

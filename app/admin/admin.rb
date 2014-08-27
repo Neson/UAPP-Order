@@ -5,6 +5,9 @@ ActiveAdmin.register Admin do
   index do
     selectable_column
     id_column
+    column :username do |admin|
+      link_to admin.username, admin_admin_path(admin)
+    end
     column :email
     column :current_sign_in_at
     column :sign_in_count
