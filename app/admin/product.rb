@@ -67,11 +67,21 @@ ActiveAdmin.register Product do
   controller do
 
     def update
-      params[:product][:product_tags_attributes].each do |k,v|
-        Product.find(params[:id]).product_tags.find_by_tag_id(v['tag_id']).destroy! if v['_destroy'].to_i == 1
+      # params[:product][:product_tags_attributes].each do |k,v|
+      #   Product.find(params[:id]).product_tags.find_by_tag_id(v['tag_id']).destroy! if v['_destroy'].to_i == 1
+      # end
+      if !!params[:product][:product_tags_attributes] && !!params[:product][:product_tags_attributes]['0']
+        Product.find(params[:id]).product_tags.destroy_all
       end
       params[:product][:product_tags_attributes].reject! do |k,v|
-        !!Product.find(params[:id]).tags.find_by_id(v['tag_id']) || v['_destroy'].to_i == 1
+        # !!Product.find(params[:id]).tags.find_by_id(v['tag_id']) || v['_destroy'].to_i == 1
+        v['_destroy'].to_i == 1
+      end
+      tags = []
+      params[:product][:product_tags_attributes].reject! do |k,v|
+        t = tags.include?(v['tag_id'])
+        tags << v['tag_id']
+        t
       end
       super
     end
