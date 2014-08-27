@@ -1,0 +1,21 @@
+= semantic_form_for [:admin, @product] do |f|
+  = f.inputs "Details" do
+    = f.input :provider, input_html: {class: 'select2'}
+    = f.input :code
+    = f.input :name
+    = f.input :description
+    = f.input :specification
+    = f.input :image
+    = f.input :original_price
+    = f.input :price
+    %li.string.input.optional.stringish
+      %label.label Tags
+      %select#tags.select2{name: "tags[]", multiple: "multiple", style: "min-width: 300px;", size: 99999}
+        - selected_tags = @product.tags.map{ |t| t.id }
+        - Tag.all.each do |tag|
+          - if selected_tags.include?(tag.id)
+            %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
+          - else
+            %option{value: "#{tag['id']}"}= tag['name']
+
+  = f.actions
