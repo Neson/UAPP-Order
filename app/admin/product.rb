@@ -51,7 +51,7 @@ ActiveAdmin.register Product do
 
     f.has_many :product_tags do |tag_f|
       # tag_f.inputs "Tag" do
-        tag_f.input :tag # it should automatically generate a drop-down select to choose from your existing tags
+        tag_f.input :tag, input_html: {class: 'select2Able'} # it should automatically generate a drop-down select to choose from your existing tags
 
         if !tag_f.object.nil?
           # show the destroy checkbox only if it is an existing tag
