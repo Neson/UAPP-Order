@@ -16,6 +16,7 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require select2
+//= require isotope.pkgd.min
 //
 //= require lib/regexWithNamedCapturingGroup
 //= require lib/jquery.getCursorPosition

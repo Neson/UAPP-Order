@@ -10,6 +10,7 @@ defaults: &defaults
   app_keywords: <%= ENV["APP_KEYWORDS"] %>
   app_domain: <%= ENV["APP_DOMAIN"] %>
   app_url: <%= ENV["APP_URL"] %>
+  show_purchases: <%= ENV["SHOW_PURCHASES"] %>
   mailer_sender: <%= ENV["MAILER_SENDER"] %>
   mailgun_api_key: <%= ENV["MAILGUN_API_KEY"] %>
   mailgun_domain: <%= ENV["MAILGUN_DOMAIN"] %>
@@ -38,6 +39,7 @@ development:
   app_keywords: 'ntust order'
   app_domain: 'order.ntust.dev'
   app_url: 'http://order.ntust.dev/'
+  show_purchases: 'false'
   administrator_email: ''
   administrator_url: ''
   mailer_sender: ''

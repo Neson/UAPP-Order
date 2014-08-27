@@ -1,0 +1,43 @@
+.container
+  篩選條件
+  %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;"}
+    - Tag.all.each do |tag|
+      %option{value: "#{'.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}"}= tag.name
+      / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
+
+  .ui.text.menu.controls#sorts
+    .header.item 排序方式
+    %a.active.item{"data-sort-by" => "name"}
+      %i.sort.alphabet.ascending.icon
+      名稱
+    %a.item{"data-sort-by" => "updateTime"}
+      %i.time.icon
+      更新日期
+    %a.item{"data-sort-by" => "price"}
+      %i.dollar.icon
+      價格
+    - if Setting['show_purchases'].to_s == 'true'
+      %a.item{"data-sort-by" => "purchases"}
+        %i.sort.order.ascending.icon
+        購買數量
+
+  .ui.products.items
+    - @products.each do |product|
+      .product.item.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[^A-Za-z0-9]/, '_') }.join(' ')}
+        .image
+          %img{:src => product.image}
+          %a.like.ui.corner.label
+            %i.like.icon
+        .content
+          .name= product.name
+          %p.description= product.description
+          .money
+            NT$
+            %span.price= product.price
+          .tags
+            - product.tags.each do |tag|
+              %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}= tag.name
+          .extra
+            - if Setting['show_purchases'].to_s == 'true'
+              %span.purchases= product.id
+              人買了這個
