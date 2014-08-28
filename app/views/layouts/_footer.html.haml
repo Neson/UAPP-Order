@@ -1,13 +1,13 @@
-.center
-  - if !!current_staff
-    %a{href: ''}
-      工作人員：#{current_staff.username}
-    \ －
-    %a{href: ''}
-      工作人員控制台
-    \ －
-    %a{href: destroy_staff_session_path, 'data-method' => :delete}
-      登出工作人員
-  - else
-    %a{href: new_staff_session_path}
-      工作人員登入
+.container
+  / %a.logo{:href => root_path}= app_logo
+  .credit.hide-on-phone
+    %span 系統設計 /
+    %a{href: ''} Neson
+    %span.small － brought to you by
+    %a{href: ''} the Misk
+  .menu.hide-on-phone
+    = render 'menus/footer'
+    = # %a.item{href: root_path}
+    = #   首頁
+    = # %a.item
+    = #   關於
