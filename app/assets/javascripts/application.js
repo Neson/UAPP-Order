@@ -21,5 +21,3 @@
 //= require lib/regexWithNamedCapturingGroup
 //= require lib/jquery.getCursorPosition
 //= require lib/jquery.caret
-//
-//= require_tree ./pages
