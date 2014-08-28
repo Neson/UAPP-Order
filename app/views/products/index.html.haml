@@ -23,7 +23,7 @@
 
   .ui.products.items
     - @products.each do |product|
-      .product.item.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[^A-Za-z0-9]/, '_') }.join(' ')}
+      .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[^A-Za-z0-9]/, '_') }.join(' ')}
         .image
           %img{:src => product.image}
           %a.like.ui.corner.label

@@ -5,8 +5,8 @@
 $ ->
   $('select.select2').select2()
   # init Isotope
-  $container = $(".products").isotope(
-    itemSelector: ".product"
+  $container = $(".products.items").isotope(
+    itemSelector: ".product.item"
     layoutMode: "masonry"
     getSortData:
       name: ".name"
