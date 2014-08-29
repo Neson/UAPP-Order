@@ -5,7 +5,7 @@
       .item
         %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;"}
           - Tag.all.each do |tag|
-            %option{value: "#{'.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}"}= tag.name
+            %option{value: "#{'.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}"}= tag.name
             / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
       .item
         #filters
@@ -32,7 +32,7 @@
 
     .ui.products.items
       - @products.each do |product|
-        .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[^A-Za-z0-9]/, '_') }.join(' ')}
+        .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[!@#$%^&*()'",\.]/, '_') }.join(' ')}
           .image{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
             %img{:src => product.image}
             %a.like.ui.corner.label
@@ -50,7 +50,7 @@
               %span.price= product.price
             .tags
               - product.tags.each do |tag|
-                %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}= tag.name
+                %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
             .buy
               購買數量：
               .ui.input
@@ -82,7 +82,7 @@
                 %span.price= product.price
               .tags
                 - product.tags.each do |tag|
-                  %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}= tag.name
+                  %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
               .extra
                 - if Setting['show_purchases'].to_s == 'true'
                   %span.purchases= product.id
