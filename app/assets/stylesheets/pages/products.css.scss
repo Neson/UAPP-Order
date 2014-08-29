@@ -261,8 +261,10 @@
 	bottom: 30px;
 	width: 100%;
 	z-index: 99999;
+	pointer-events: none;
 
 	.paper {
+		pointer-events: bounding-box;
 		@include translateY(400px);
 		@include transition-property(all);
 		@include transition-duration(.5s);
