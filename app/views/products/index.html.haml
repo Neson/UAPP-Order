@@ -7,6 +7,11 @@
           - Tag.all.each do |tag|
             %option{value: "#{'.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}"}= tag.name
             / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
+      .item
+        #filters
+          顯示
+          %a{"data-filter" => "buy", :href => 'javascript:void(0)' } 購物車內項目
+          %a{"data-filter" => "", :href => 'javascript:void(0)' } 所有項目
 
     .ui.text.menu.controls#sorts
       .header.item 排序方式

@@ -18,21 +18,20 @@ productsIsotope = ->
   # filter functions
   filterFns =
 
-    # show if number is greater than 50
-    numberGreaterThan50: ->
-      number = $(this).find(".number").text()
-      parseInt(number, 10) > 50
+    buy: ->
+      number = $(this).find("input").val()
+      parseInt(number) > 0
 
-    # show if name ends with -ium
-    ium: ->
-      name = $(this).find(".name").text()
-      name.match /ium$/
 
   # bind filter button click
-  $("#filters").on "click", "button", ->
+  $("#filters").on "click", "a", ->
     filterValue = $(this).attr("data-filter")
     filterValue = filterFns[filterValue] or filterValue
     $container.isotope filter: filterValue
+    setTimeout ->
+      $('#tags.select').val('')
+      $('#tags.select').select2()
+    , 10
 
   $(".filter-toggle").bind "click", ->
     filterValue = $(this).attr("data-filter")
