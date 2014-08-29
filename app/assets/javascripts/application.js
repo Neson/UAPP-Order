@@ -18,6 +18,5 @@
 //= require select2
 //= require isotope.pkgd.min
 //
-//= require lib/regexWithNamedCapturingGroup
-//= require lib/jquery.getCursorPosition
-//= require lib/jquery.caret
+//= require_tree ./lib/
+//= require_tree ./pages/

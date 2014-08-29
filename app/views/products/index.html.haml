@@ -1,43 +1,145 @@
-.container.products
-  篩選條件
-  %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;"}
-    - Tag.all.each do |tag|
-      %option{value: "#{'.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}"}= tag.name
-      / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
+= form_tag "/", method: "post" do
+  .container.products
+    .ui.text.menu.controls#tags
+      .header.item 標籤篩選
+      .item
+        %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;"}
+          - Tag.all.each do |tag|
+            %option{value: "#{'.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}"}= tag.name
+            / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
 
-  .ui.text.menu.controls#sorts
-    .header.item 排序方式
-    %a.active.item{"data-sort-by" => "name"}
-      %i.sort.alphabet.ascending.icon
-      名稱
-    %a.item{"data-sort-by" => "updateTime"}
-      %i.time.icon
-      更新日期
-    %a.item{"data-sort-by" => "price"}
-      %i.dollar.icon
-      價格
-    - if Setting['show_purchases'].to_s == 'true'
-      %a.item{"data-sort-by" => "purchases"}
-        %i.sort.order.ascending.icon
-        購買數量
+    .ui.text.menu.controls#sorts
+      .header.item 排序方式
+      .group
+        %a.active.item{"data-sort-by" => "name"}
+          %i.sort.alphabet.ascending.icon
+          名稱
+        %a.item{"data-sort-by" => "updateTime"}
+          %i.time.icon
+          更新日期
+        %a.item{"data-sort-by" => "price"}
+          %i.dollar.icon
+          價格
+        - if Setting['show_purchases'].to_s == 'true'
+          %a.item{"data-sort-by" => "purchases"}
+            %i.sort.order.ascending.icon
+            購買數量
 
-  .ui.products.items
-    - @products.each do |product|
-      .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[^A-Za-z0-9]/, '_') }.join(' ')}
-        .image
-          %img{:src => product.image}
-          %a.like.ui.corner.label
-            %i.like.icon
-        .content
-          .name= product.name
-          %p.description= product.description
-          .money
-            NT$
-            %span.price= product.price
-          .tags
-            - product.tags.each do |tag|
-              %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}= tag.name
-          .extra
-            - if Setting['show_purchases'].to_s == 'true'
-              %span.purchases= product.id
-              人買了這個
+    .ui.products.items
+      - @products.each do |product|
+        .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[^A-Za-z0-9]/, '_') }.join(' ')}
+          .image{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
+            %img{:src => product.image}
+            %a.like.ui.corner.label
+              %i.like.icon
+          .content
+            .name{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.name
+            %p.description{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.description
+            - if product.original_price
+              .original_money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
+                %span.cross
+                  NT$
+                  %span.original_price= product.original_price
+            .money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
+              NT$
+              %span.price= product.price
+            .tags
+              - product.tags.each do |tag|
+                %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}= tag.name
+            .buy
+              購買數量：
+              .ui.input
+                %input{:id => "order_#{product.id}", :name => "order['#{product.id}']", :placeholder => "數量", :type => "number", :min => "0", :step => ""}
+                / .ui.icon.buttons
+              .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
+                %i.add.icon
+              .ui.frameless.grey.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) - 1 ); updateForm();"}
+                %i.minus.icon
+            .extra
+              - if Setting['show_purchases'].to_s == 'true'
+                %span.purchases= product.id
+                人買了這個
+        .ui.product.modal.paper.z-depth-4{:class => "product_modal_#{product.id}"}
+          .header
+            = product.name
+          .content
+            .left
+              %img{:src => product.image}
+            .right
+              %p.description{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.description
+              - if product.original_price
+                .original_money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
+                  %span.cross
+                    NT$
+                    %span.original_price= product.original_price
+              .money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
+                NT$
+                %span.price= product.price
+              .tags
+                - product.tags.each do |tag|
+                  %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[^A-Za-z0-9]/, '_')}= tag.name
+              .extra
+                - if Setting['show_purchases'].to_s == 'true'
+                  %span.purchases= product.id
+                  人買了這個
+            .bottom.specification= simple_format product.specification
+          .actions
+            .ui.black.frameless.button
+              關閉
+            .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
+              放入購物車
+
+  .orders.w
+    .container.orders
+      .ui.order.paper.z-depth-2
+        .header 購物車
+        .detail
+          %span.items-detail
+        .price
+          NT$
+          %span.total-price
+          = submit_tag '送出訂單', class: 'ui massive frameless button'
+
+:coffee
+  $(window).bind 'scroll', ->
+    b = $('.wrapper').height() - ($(window).scrollTop() + $(window).height())
+    if b < 40
+      $('.orders.w').css 'padding-bottom', (40-b) + 'px'
+    else
+      $('.orders.w').css 'padding-bottom', 0
+
+  window.updateForm = ->
+    itemsArr = []
+    totalP = 0
+    orderD = {}
+    $('.product.item').each ->
+      ci = $(this).find('.buy input')
+      ci.val(null) if ci.val() <= 0
+      c = ci.val()
+      orderD[ci.attr('id')] = c
+      if c > 0
+        $(this).addClass('active')
+        p = $(this).find('.price').html()
+        n = $(this).find('.name').html()
+        totalP += p*c
+        itemsArr.push n + '×' + c
+      else
+        $(this).removeClass('active')
+    $('.items-detail').html itemsArr.join(' + ')
+    $('.total-price').html totalP
+    if itemsArr.length > 0
+      $('.orders.w').addClass('active')
+    else
+      $('.orders.w').removeClass('active')
+    bakeCookie 'orderD', orderD
+
+  $('input').change ->
+    updateForm()
+
+  $('input').keyup ->
+    updateForm()
+
+  orderD = readCookie('orderD')
+  for k of orderD
+    $('#' + k).val(orderD[k])
+  updateForm()

@@ -2,9 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$ ->
-  $('select.select2').select2()
-  # init Isotope
+productsIsotope = ->
   $container = $(".products.items").isotope(
     itemSelector: ".product.item"
     layoutMode: "masonry"
@@ -17,7 +15,6 @@ $ ->
       #   weight = $(itemElem).find(".weight").text()
       #   parseFloat weight.replace(/[\(\)]/g, "")
   )
-
   # filter functions
   filterFns =
 
@@ -63,3 +60,13 @@ $ ->
     $controls.on "click", "a", ->
       $controls.find(".active").removeClass "active"
       $(this).addClass "active"
+
+$ ->
+  $('select.select2').select2()
+  # init Isotope
+  productsIsotope()
+
+window.refTope = ->
+  productsIsotope()
+  setTimeout refTope, 1000
+refTope()
