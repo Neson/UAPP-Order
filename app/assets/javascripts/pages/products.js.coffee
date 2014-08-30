@@ -43,6 +43,11 @@ productsIsotope = ->
     $('#tags.select').change()
     $('#tags.select').select2()
 
+  $(".filter-shopping-cart").bind "click", ->
+    $('#tags select').val(['.active'])
+    $('#tags select').select2()
+    $container.isotope filter: '.active'
+
   $('#tags.select').change ->
     # filterValue = $('#tags.select').val()?.join(', ')
     filterValue = $('#tags.select').val()?.join('')

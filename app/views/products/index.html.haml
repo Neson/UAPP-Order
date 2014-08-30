@@ -7,6 +7,7 @@
           - Tag.all.each do |tag|
             %option{value: "#{'.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}"}= tag.name
             / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
+          %option{value: ".active"} 購物車內項目
       .item
         #filters
           顯示
@@ -97,7 +98,10 @@
   .orders.w
     .container.orders
       .ui.order.paper.z-depth-2
-        .header 購物車
+        .header
+          購物車
+          %a.ui.mini.red.frameless.button.filter-shopping-cart{href: 'javascript:void(0)'} 篩選－購物車內項目
+
         .detail
           %span.items-detail
         .price
@@ -113,7 +117,9 @@
     else
       $('.orders.w').css 'padding-bottom', 0
 
+  window.ota = 0
   window.updateForm = ->
+    clearTimeout(window.ota)
     itemsArr = []
     totalP = 0
     orderD = {}
@@ -128,7 +134,8 @@
         p = $(this).find('.price').html()
         n = $(this).find('.name').html()
         totalP += p*c
-        itemsArr.push n + '×' + c
+        shoppingCartItem = '<div class="ui blue label">' + n + '<div class="detail">×' + c + '</div><i class="delete icon" onclick="$(\'#' + ci.attr('id') + '\').val(null); updateForm();"></i></div>'
+        itemsArr.push shoppingCartItem
       else
         $(this).removeClass('active')
     $('.items-detail').html itemsArr.join(' + ')
@@ -138,8 +145,11 @@
     else
       $('.orders.w').removeClass('active')
     bakeCookie 'orderD', orderD
+
     if prevTotalP != $('.total-price').html() and prevTotalP != '0'
-      $('.orders.w .orders').transition('pulse')
+      window.ota = setTimeout ->
+        $('.orders.w .orders').transition('pulse')
+      , 200
 
   $('input').change ->
     updateForm()

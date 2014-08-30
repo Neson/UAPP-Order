@@ -286,9 +286,9 @@
 		position: absolute;
 	}
 
-	.detail {
+	> .detail, > * > .detail {
 		float: left;
-		margin-top: 30px;
+		margin-top: 38px;
 	}
 
 	.price {
