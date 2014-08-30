@@ -57,7 +57,7 @@
             .buy
               購買數量：
               .ui.input
-                %input{:id => "order_#{product.id}", :name => "order[#{product.id}]", :placeholder => "數量", :type => "number", :min => "0", :step => ""}
+                %input{:id => "order_#{product.id}", :name => "order[#{product.id}]", :placeholder => "數量", :type => "number", :min => "0", :max => "50", :step => ""}
                 / .ui.icon.buttons
               .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
                 %i.add.icon

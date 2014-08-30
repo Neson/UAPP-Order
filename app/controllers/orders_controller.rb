@@ -4,6 +4,7 @@ class OrdersController < ApplicationController
   def batch_create
     # Order.transaction do
       params[:order].each do |id, q|
+        raise 'too many!' if q.to_i > 100
         q.to_i.times do
           o = Product.find(id).orders.new
           o.user = current_user
