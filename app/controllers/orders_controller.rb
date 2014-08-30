@@ -12,12 +12,16 @@ class OrdersController < ApplicationController
         end
       end
     # end
-    # cookies[:orderD] = ''
-    # cookies.delete :orderD
+    session[:ordered] = true
     redirect_to my_orders_path
   end
 
   def my_orders
+    if session[:ordered]
+      @ordered = true
+    else
+      @ordered = false
+    end
     @orders = current_user.orders
   end
 

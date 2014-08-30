@@ -1,3 +1,7 @@
+- if @ordered
+  :javascript
+    deleteCookie('orderD');
+
 = form_tag update_orders_path, method: "post" do
   .container.my_orders
     %h1 您的訂購單
