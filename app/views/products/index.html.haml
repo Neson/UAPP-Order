@@ -9,10 +9,12 @@
             / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
           %option{value: ".active"} 購物車內項目
       .item
-        #filters
-          顯示
-          %a{"data-filter" => "buy", :href => 'javascript:void(0)' } 購物車內項目
-          %a{"data-filter" => "", :href => 'javascript:void(0)' } 所有項目
+        %i.info.icon
+        可以按下 ctrl(command) + F 來搜尋
+        / #filters
+        /   顯示
+        /   %a{"data-filter" => "buy", :href => 'javascript:void(0)' } 購物車內項目
+        /   %a{"data-filter" => "", :href => 'javascript:void(0)' } 所有項目
 
     .ui.text.menu.controls#sorts
       .header.item 排序方式
@@ -138,7 +140,7 @@
         itemsArr.push shoppingCartItem
       else
         $(this).removeClass('active')
-    $('.items-detail').html itemsArr.join(' + ')
+    $('.items-detail').html itemsArr.join(' <span>+</span> ')
     $('.total-price').html totalP
     if itemsArr.length > 0
       $('.orders.w').addClass('active')
@@ -149,7 +151,7 @@
     if prevTotalP != $('.total-price').html() and prevTotalP != '0'
       window.ota = setTimeout ->
         $('.orders.w .orders').transition('pulse')
-      , 200
+      , 360
 
   $('input').change ->
     updateForm()

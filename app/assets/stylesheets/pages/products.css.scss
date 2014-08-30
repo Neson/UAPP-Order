@@ -4,7 +4,7 @@
 
 .container.products {
 	padding-top: 20px;
-	margin-bottom: 170px;
+	margin-bottom: 300px;
 
 	.controls:first-of-type {
 		margin-top: 0 !important;
@@ -296,4 +296,16 @@
 		font-weight: 800;
 		float: right;
 	}
+
+	.items-detail > * {
+		margin: 5px 0;
+	}
+
+	.items-detail {
+		margin: -5px 0;
+	}
+
+	// .paper {
+	// 	padding-bottom: 14px;
+	// }
 }
