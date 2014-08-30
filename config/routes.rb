@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'products#index'
 
+  post 'new_order' => 'orders#batch_create'
+  get 'my_orders' => 'orders#my_orders'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

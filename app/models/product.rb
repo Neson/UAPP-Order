@@ -5,6 +5,7 @@ class Product < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :code
 
   belongs_to :provider
+  has_many :orders
   has_many :product_tags
   has_many :tags, through: :product_tags
 

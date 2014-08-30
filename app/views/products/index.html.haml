@@ -1,4 +1,4 @@
-= form_tag "/", method: "post" do
+= form_tag new_order_path, method: "post" do
   .container.products
     .ui.text.menu.controls#tags
       .header.item 標籤篩選
@@ -54,7 +54,7 @@
             .buy
               購買數量：
               .ui.input
-                %input{:id => "order_#{product.id}", :name => "order['#{product.id}']", :placeholder => "數量", :type => "number", :min => "0", :step => ""}
+                %input{:id => "order_#{product.id}", :name => "order[#{product.id}]", :placeholder => "數量", :type => "number", :min => "0", :step => ""}
                 / .ui.icon.buttons
               .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
                 %i.add.icon
@@ -103,7 +103,7 @@
         .price
           NT$
           %span.total-price
-          = submit_tag '送出訂單', class: 'ui massive frameless button'
+          = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
 
 :coffee
   $(window).bind 'scroll', ->
@@ -117,6 +117,7 @@
     itemsArr = []
     totalP = 0
     orderD = {}
+    prevTotalP = $('.total-price').html()
     $('.product.item').each ->
       ci = $(this).find('.buy input')
       ci.val(null) if ci.val() <= 0
@@ -137,6 +138,8 @@
     else
       $('.orders.w').removeClass('active')
     bakeCookie 'orderD', orderD
+    if prevTotalP != $('.total-price').html() and prevTotalP != '0'
+      $('.orders.w .orders').transition('pulse')
 
   $('input').change ->
     updateForm()

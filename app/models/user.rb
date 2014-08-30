@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
     user.gender = auth.info.gender
     user.mobile_verified = auth.info.mobile_verified
     user.identity = auth.info.identity
+    user.student_id = auth.info.student_id
     user.admission_department_code = auth.info.admission_department_code
     user.department_code = auth.info.department_code
     user.admission_department = auth.info.admission_department
