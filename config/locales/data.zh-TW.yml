@@ -1,0 +1,27 @@
+zh-TW:
+  activerecord:
+    models:
+      user: "使用者"
+      order: "訂單"
+      product: "產品"
+      provider: "廠商"
+      tag: "Tag"
+      feedback: "意見回饋"
+      staff: "工作人員"
+      admin: "系統管理員"
+    attributes:
+      product:
+        provider: "廠商"
+        code: "代碼"
+        name: "名稱"
+        description: "簡述"
+        specification: "詳細規格"
+        image: "圖片網址"
+        original_price: "原價"
+        price: "售價"
+        tag: "標籤"
+      provider:
+        code: "代碼"
+        name: "名稱"
+      tag:
+        name: "名稱"

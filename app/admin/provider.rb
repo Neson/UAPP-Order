@@ -15,6 +15,28 @@ ActiveAdmin.register Provider do
     actions
   end
 
+  show do |provider|
+    attributes_table do
+      row :id
+      row :code
+      row :name
+    end
+    panel "#{provider.name} 的訂單" do
+      table_for(provider.products) do |p|
+        column '產品', :sortable => :product_id do |p|
+          auto_link p
+        end
+        column '全部訂單數量' do |p|
+          p.orders.count
+        end
+        column '已確認付款、未交貨訂單數量' do |p|
+          p.orders.where('state = ?', 'paied').count
+        end
+      end
+    end
+    active_admin_comments
+  end
+
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
