@@ -20,4 +20,7 @@ class OrdersController < ApplicationController
   def my_orders
     @orders = current_user.orders
   end
+
+  def update_orders
+  end
 end

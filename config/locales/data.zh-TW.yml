@@ -1,4 +1,14 @@
 zh-TW:
+  order:
+    state:
+      new: "等後付款中"
+      cancelled: "已取消"
+      confirming: "付款資料確認中"
+      paid: "已付款"
+      delivered: "已送達"
+      problem: "問題處理中"
+      exchanging: "換貨中"
+      refunding: "退款中"
   activerecord:
     models:
       user: "使用者"

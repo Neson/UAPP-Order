@@ -1,1 +1,53 @@
-.haha ha
+= form_tag update_orders_path, method: "post" do
+  .container.my_orders
+    %h1 您的訂購單
+    %table.ui.table.segment
+      %thead
+        %tr
+          %th 品名
+          %th 價格
+          %th 訂單狀態
+      %tbody
+        - @orders.each do |order|
+          %tr{class: ('positive' if order.state == 'delivered') || ('warning' if order.state == 'new')}
+            %td
+              .ui.checkbox
+                = check_box_tag "order[#{order.id}]", 1, (order.state == 'new')
+                %label= order.product.name
+            %td
+              NT$
+              = order.price
+            - if order.state == 'new'
+              %td.warning
+                %i.info.icon
+                = t("order.state.#{order.state}")
+            - elsif order.state == 'cancelled'
+              %td
+                = t("order.state.#{order.state}")
+            - elsif order.state == 'confirming'
+              %td.warning
+                %i.info.icon
+                = t("order.state.#{order.state}")
+            - elsif order.state == 'paid'
+              %td.positive
+                %i.info.icon
+                = t("order.state.#{order.state}")
+            - elsif order.state == 'delivered'
+              %td.warning
+                %i.checkmark.icon
+                = t("order.state.#{order.state}")
+            - elsif order.state == 'problem'
+              %td.warning
+                %i.info.icon
+                = t("order.state.#{order.state}")
+            - elsif order.state == 'exchanging'
+              %td.warning
+                %i.info.icon
+                = t("order.state.#{order.state}")
+            - elsif order.state == 'refunding'
+              %td.warning
+                %i.info.icon
+                = t("order.state.#{order.state}")
+            - else
+              %td.warning
+                = t("order.state.#{order.state}")

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   root 'products#index'
 
   post 'new_order' => 'orders#batch_create'
+  post 'update_orders' => 'orders#update_orders'
   get 'my_orders' => 'orders#my_orders'
 
   # Example of regular route:
