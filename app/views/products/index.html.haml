@@ -5,7 +5,7 @@
     .ui.text.menu.controls#tags
       .header.item 標籤篩選
       .item
-        %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;"}
+        %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;", placeholder: Preference.tag_filter_placeholder}
           - Tag.all.each do |tag|
             %option{value: "#{'.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}"}= tag.name
             / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
@@ -40,8 +40,8 @@
         .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[!@#$%^&*()'",\.]/, '_') }.join(' ')}
           .image{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
             %img{:src => product.image}
-            %a.like.ui.corner.label
-              %i.like.icon
+            %a.ui.corner.label.provider
+              .text= product.provider.name
           .content
             .name{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.name
             %p.description{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.description
@@ -56,18 +56,19 @@
             .tags
               - product.tags.each do |tag|
                 %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
-            .buy
-              購買數量：
-              .ui.input
-                %input{:id => "order_#{product.id}", :name => "order[#{product.id}]", :placeholder => "數量", :type => "number", :min => "0", :max => "50", :step => ""}
-                / .ui.icon.buttons
-              .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
-                %i.add.icon
-              .ui.frameless.grey.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) - 1 ); updateForm();"}
-                %i.minus.icon
+            - if @can_order
+              .buy
+                購買數量：
+                .ui.input
+                  %input{:id => "order_#{product.id}", :name => "order[#{product.id}]", :placeholder => "數量", :type => "number", :min => "0", :max => "50", :step => ""}
+                  / .ui.icon.buttons
+                .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
+                  %i.add.icon
+                .ui.frameless.grey.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) - 1 ); updateForm();"}
+                  %i.minus.icon
             .extra
               - if Setting['show_purchases'].to_s == 'true'
-                %span.purchases= product.id
+                %span.purchases= product.orders.size
                 人買了這個
         .ui.product.modal.paper.z-depth-4{:class => "product_modal_#{product.id}"}
           .header
@@ -96,22 +97,23 @@
           .actions
             .ui.black.frameless.button
               關閉
-            .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
-              放入購物車
+            - if @can_order
+              .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
+                放入購物車
+  - if @can_order
+    .orders.w
+      .container.orders
+        .ui.order.paper.z-depth-2
+          .header
+            購物車
+            %a.ui.mini.red.frameless.button.filter-shopping-cart{href: 'javascript:void(0)'} 篩選－購物車內項目
 
-  .orders.w
-    .container.orders
-      .ui.order.paper.z-depth-2
-        .header
-          購物車
-          %a.ui.mini.red.frameless.button.filter-shopping-cart{href: 'javascript:void(0)'} 篩選－購物車內項目
-
-        .detail
-          %span.items-detail
-        .price
-          NT$
-          %span.total-price
-          = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
+          .detail
+            %span.items-detail
+          .price
+            NT$
+            %span.total-price
+            = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
 
 :coffee
   $(window).bind 'scroll', ->

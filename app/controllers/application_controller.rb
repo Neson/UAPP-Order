@@ -28,6 +28,15 @@ class ApplicationController < ActionController::Base
     Setting['google_analytics_id'] = @uapp_data['google_analytics_id'] if Setting['google_analytics_id'].to_s == ''
   end
 
+  def can_order
+    if Preference.order_deadline.to_s != '' && Time.parse(Preference.order_deadline) < Time.now
+      return false
+    elsif Preference.order_starttime.to_s != '' && Time.parse(Preference.order_starttime) > Time.now
+    else
+      return true
+    end
+  end
+
   private
 
   def save_page_history

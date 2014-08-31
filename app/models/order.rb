@@ -2,7 +2,7 @@ class Order < ActiveRecord::Base
   validates :price, :numericality => { :greater_than_or_equal_to => 0 }
   # validates_inclusion_of :state, :in => ["new", "cancelled", "confirming", "paid", "delivered", "problem", "exchanging", "refunding"]
 
-  belongs_to :product
+  belongs_to :product, :counter_cache => true
   belongs_to :user
   has_many :states, class_name: "OrderState"
   belongs_to :payment_report

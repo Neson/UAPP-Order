@@ -183,6 +183,12 @@
 			opacity: .3;
 		}
 	}
+
+	.ui.corner.label.provider .text {
+		@include nowrap;
+		@include ellipsis;
+		width: 32px;
+	}
 }
 
 .product.modal {

@@ -10,6 +10,13 @@
         %th 金額
         %th
     %tbody
+      - if @unconfirmed_payment_reports.length == 0
+        %tr
+          %td.center{colspan: 10}
+            %br
+            GJ！沒有未審核的付款通知。
+            %br
+            %br
       - @unconfirmed_payment_reports.each do |pr|
         %tr
           %td= "##{pr.id}"
