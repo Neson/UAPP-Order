@@ -2,26 +2,47 @@
   :javascript
     deleteCookie('orderD');
 
-= form_tag update_orders_path, method: "post" do
+= form_tag update_orders_path, method: "post", id: "orders_form", onsubmit: "return checkForm(this);" do
+  - has_action_cancel = false
+  - has_action_pay = false
+  - has_action_issue = false
+  - action_pay_amout = 0
   .container.my_orders
     %h1 您的訂購單
-    %table.ui.table.segment
+    - if Preference.payment_info.to_s != ''
+      .ui.accordion
+        .title
+          %i.dropdown.icon
+          繳款資料
+        .content
+          %p= Preference.payment_info.html_safe
+    %table.ui.table.segment.sortable
       %thead
         %tr
           %th 品名
+          %th 訂購時間
           %th 價格
           %th 訂單狀態
       %tbody
         - @orders.each do |order|
-          %tr{class: ('positive' if order.state == 'delivered') || ('warning' if order.state == 'new')}
+          %tr{class: ("positive #{order.state}" if order.state == 'delivered') || ("warning #{order.state}" if order.state == 'new') || order.state }
             %td
-              .ui.checkbox
-                = check_box_tag "order[#{order.id}]", 1, (order.state == 'new')
-                %label= order.product.name
+              - if order.state == 'new' || order.state == 'delivered'
+                .ui.checkbox
+                  = check_box_tag "order[#{order.id}]", 1, (order.state == 'new')
+                  %label= order.product.name
+              - else
+                .ui.checkbox
+                  = check_box_tag "order[#{order.id}]", 1, (order.state == 'new'), disabled: "disabled"
+                  %label= order.product.name
+            %td= order.created_at
             %td
               NT$
               = order.price
             - if order.state == 'new'
+              - has_action_cancel = true
+              - has_action_pay = true
+              - action_pay_amout += order.price
               %td.warning
                 %i.info.icon
                 = t("order.state.#{order.state}")
@@ -37,6 +58,7 @@
                 %i.info.icon
                 = t("order.state.#{order.state}")
             - elsif order.state == 'delivered'
+              - has_action_issue = true
               %td.warning
                 %i.checkmark.icon
                 = t("order.state.#{order.state}")
@@ -55,3 +77,97 @@
             - else
               %td.warning
                 = t("order.state.#{order.state}")
+      %tfoot
+        %tr
+          %th
+          %th
+          %th
+            - if has_action_pay
+              總共應繳 NT$
+              = action_pay_amout
+              %span.checked_should_pay
+          %th
+    - if has_action_pay
+      %a.ui.button{onclick: "$('#payment_report_form').modal('show');"} 回報付款資料
+      :coffee
+        setTimeout ->
+          $('.ui.accordion .title').click();
+        , 1000
+    - if has_action_cancel
+      = submit_tag '取消訂單', class: 'ui red button', :data => { :confirm => '確定要取消選取的項目嗎?' }
+    #payment_report_form.ui.small.modal.paper.z-depth-4
+      .header
+        付款資料
+      .content
+        .ui.form
+          .inline.field
+            %label 帳號末五碼
+            %input{:name => 'payment_report[account_number]', :placeholder => "12345", :type => "text"}
+          .inline.field
+            %label 大略匯款時間
+            %input#dt{:name => 'payment_report[datetime]', :placeholder => "", :type => "text"}
+          .inline.field
+            %label 本次匯款金額 NT$
+            %input{:name => 'payment_report[amout]', :placeholder => "", :type => "text"}
+      .actions
+        .ui.frameless.black.button
+          取消
+        / .ui.frameless.l_button{oncilck: "$('#orders_form').submit();"}
+        /   回報付款資料
+        = submit_tag '回報付款資料', class: 'ui frameless l_button', id: 'payment_report_form_submit'
+
+:coffee
+  $(document).ready ->
+    rome(dt)
+    $('table.sortable').tablesort()
+    $('input.button').unbind('click')
+
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 100
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 200
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 300
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 500
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 1000
+
+    window.checkForm = ->
+      if !!$("#payment_report_form.active")[0]
+        $("#payment_report_form.active").form('validate form')
+      else
+        true
+
+    $("#payment_report_form").form
+      accountNumber:
+        identifier: "payment_report[account_number]"
+        rules: [
+          type: "empty"
+          prompt: "Please enter"
+        ]
+
+      datetime:
+        identifier: "payment_report[datetime]"
+        rules: [
+          type: "empty"
+          prompt: "Please enter"
+        ]
+
+      amout:
+        identifier: "payment_report[amout]"
+        rules: [
+          type: "empty"
+          prompt: "Please enter"
+        ]
+

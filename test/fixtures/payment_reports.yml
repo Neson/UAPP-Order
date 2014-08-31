@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account_number: MyString
+  datetime: 2014-08-31 18:28:49
+  amout: 1.5
+
+two:
+  account_number: MyString
+  datetime: 2014-08-31 18:28:49
+  amout: 1.5

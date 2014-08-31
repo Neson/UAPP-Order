@@ -17,6 +17,9 @@
 //= require nprogress-turbolinks
 //= require select2
 //= require isotope.pkgd.min
+//= require jquery.tablesort.min
+//= require moment
+//= require rome.standalone.min
 //
 //= require_tree ./lib/
 //= require_tree ./pages/

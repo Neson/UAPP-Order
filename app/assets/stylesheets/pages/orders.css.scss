@@ -1,3 +1,14 @@
 // Place all the styles related to the orders controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.container.my_orders {
+
+	.ui.accordion {
+		width: 100%;
+	}
+
+	.ui.disabled.checkbox ~ .box:after, .ui.checkbox input[disabled] ~ .box:after, .ui.disabled.checkbox label, .ui.checkbox input[disabled] ~ label {
+		@include opacity(1);
+	}
+}

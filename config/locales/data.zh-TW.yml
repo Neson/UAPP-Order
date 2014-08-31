@@ -1,7 +1,15 @@
 zh-TW:
+  active_admin:
+    devise:
+      email:
+        title: 信箱
+      username:
+        title: 帳號
+      password:
+        title: 密碼
   order:
     state:
-      new: "等後付款中"
+      new: "等候付款中"
       cancelled: "已取消"
       confirming: "付款資料確認中"
       paid: "已付款"
