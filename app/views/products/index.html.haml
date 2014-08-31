@@ -150,10 +150,10 @@
       $('.orders.w').removeClass('active')
     bakeCookie 'orderD', orderD
 
-    if prevTotalP != $('.total-price').html() and prevTotalP != '0'
-      window.ota = setTimeout ->
-        $('.orders.w .orders').transition('pulse')
-      , 360
+    #if prevTotalP != $('.total-price').html() and prevTotalP != '0'
+    #  window.ota = setTimeout ->
+    #    $('.orders.w .orders').transition('pulse')
+    #  , 360
 
   $('input').change ->
     updateForm()

@@ -24,6 +24,14 @@
           %th 價格
           %th 訂單狀態
       %tbody
+        - if @orders.length == 0
+          %tr
+            %td.center{colspan: 10}
+              %br
+              您還沒有任何訂單。
+              = link_to '現在訂購！', root_path
+              %br
+              %br
         - @orders.each do |order|
           %tr{class: ("positive #{order.state}" if order.state == 'delivered') || ("warning #{order.state}" if order.state == 'new') || order.state }
             %td
@@ -142,6 +150,30 @@
       $("#payment_report_form").appendTo(".container.my_orders")
       $(".ui.dimmer").remove()
     , 1000
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 1500
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 2000
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 3000
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 4000
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 5000
+    setTimeout ->
+      $("#payment_report_form").appendTo(".container.my_orders")
+      $(".ui.dimmer").remove()
+    , 6000
 
     window.checkForm = ->
       if !!$("#payment_report_form.active")[0]
