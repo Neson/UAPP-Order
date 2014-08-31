@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post 'new_order' => 'orders#batch_create'
   post 'update_orders' => 'orders#update_orders'
   get 'my_orders' => 'orders#my_orders'
+  get 'order_notice' => 'pages#order_notice'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

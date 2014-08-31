@@ -40,6 +40,7 @@ gem 'unicorn'
 # gem 'debugger', group: [:development, :test]
 
 gem 'settingslogic', '~> 2.0.9'
+gem 'rails-settings-cached', '0.4.1'
 
 gem 'haml'
 gem 'haml-rails', '~> 0.5.3'

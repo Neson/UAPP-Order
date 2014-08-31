@@ -1,6 +1,6 @@
-%a.item{href: root_path}
+%a.item{href: root_path, class: "#{'active' if controller?('products') && action?('index')}"}
   訂購
-%a.item
+%a.item{href: my_orders_path, class: "#{'active' if controller?('orders') && action?('my_orders')}"}
   訂購清單
-%a.item
-  購買流程
+%a.item{href: order_notice_path, class: "#{'active' if controller?('pages') && action?('order_notice')}"}
+  購買須知

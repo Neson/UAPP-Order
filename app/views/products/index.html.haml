@@ -1,5 +1,7 @@
 = form_tag new_order_path, method: "post" do
   .container.products
+    - if Preference.products_head.to_s != ''
+      .products_head= Preference.products_head.html_safe
     .ui.text.menu.controls#tags
       .header.item 標籤篩選
       .item
