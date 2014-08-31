@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140831211818) do
+ActiveRecord::Schema.define(version: 20140831220301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(version: 20140831211818) do
     t.datetime "updated_at"
     t.string   "state"
     t.integer  "payment_report_id"
+    t.string   "custom_column_1"
+    t.string   "custom_column_2"
   end
 
   create_table "payment_reports", force: true do |t|

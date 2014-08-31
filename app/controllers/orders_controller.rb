@@ -10,6 +10,8 @@ class OrdersController < ApplicationController
             o = Product.find(id).orders.new
             o.user = current_user
             o.price = o.product.price
+            o.custom_column_1 = params[:order_custom_column_1] if params[:order_custom_column_1].to_s != ''
+            o.custom_column_2 = params[:order_custom_column_2] if params[:order_custom_column_2].to_s != ''
             o.save!
           end
         end

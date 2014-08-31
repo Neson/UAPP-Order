@@ -113,7 +113,87 @@
           .price
             NT$
             %span.total-price
-            = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
+            - if Preference.order_consent.to_s != ''
+              %a.ui.massive.frameless.button{onclick: "$('#before_order_form').modal('show');"} 送出訂單
+            - else
+              = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
+    #before_order_form.ui.small.modal.paper.z-depth-4
+      .header
+        購買
+      .content
+        .ui.form
+          - if Preference.order_custom_column_1_name.to_s != ''
+            .inline.field
+              %label= Preference.order_custom_column_1_name
+              - if Preference.order_custom_column_1_options.to_s != ''
+                %select#order_custom_column_1_options.select2.select{name: "order_custom_column_1", style: "min-width: 300px;"}
+                  - JSON.parse(Preference.order_custom_column_1_options).each do |o|
+                    %option{value: o}= o
+              - else
+                %input{:name => 'order_custom_column_1', :type => "text"}
+            .inline.field
+              %label= Preference.order_custom_column_2_name
+              - if Preference.order_custom_column_2_options.to_s != ''
+                %select#order_custom_column_2_options.select2.select{name: "order_custom_column_2", style: "min-width: 300px;"}
+                  - JSON.parse(Preference.order_custom_column_2_options).each do |o|
+                    %option{value: o}= o
+              - else
+                %input{:name => 'order_custom_column_2', :type => "text"}
+        - if Preference.order_consent.to_s != ''
+          %p= Preference.order_consent.html_safe
+      .actions
+        .ui.frameless.black.button
+          取消
+        / .ui.frameless.l_button{oncilck: "$('#orders_form').submit();"}
+        /   回報付款資料
+        = submit_tag '送出訂單', class: 'ui frameless l_button', id: 'payment_report_form_submit'
+    :coffee
+      $(document).ready ->
+
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 100
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 200
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 300
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 500
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 1000
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 1500
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 2000
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 3000
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 4000
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 5000
+        setTimeout ->
+          $(".ui.modal").appendTo(".container.products")
+          $(".ui.dimmer").remove()
+        , 6000
 
 :coffee
   $(window).bind 'scroll', ->

@@ -6,6 +6,8 @@ ActiveAdmin.register Order do
   filter :product, :label => '訂購項目'
   filter :state, :label => '訂單狀態'
   filter :price, :label => '價格'
+  filter :custom_column_1, :label => '自定欄位一'
+  filter :custom_column_2, :label => '自定欄位二'
 
   index do
     selectable_column
@@ -24,6 +26,12 @@ ActiveAdmin.register Order do
     end
     column '產品代碼', :sortable => :product_id do |o|
       o.product.code
+    end
+    column '自定欄位一', :sortable => :product_id do |o|
+      o.custom_column_1
+    end
+    column '自定欄位二', :sortable => :product_id do |o|
+      o.custom_column_2
     end
     column '訂單狀態' do |o|
       status_tag(o.state, :class => o.state)
@@ -48,6 +56,8 @@ ActiveAdmin.register Order do
       row :payment_report
       row :created_at
       row :updated_at
+      row :custom_column_1
+      row :custom_column_2
     end
     panel "歷史狀態" do
       table_for(o.states.order('created_at desc')) do |s|

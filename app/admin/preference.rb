@@ -30,6 +30,37 @@ ActiveAdmin.register_page "Preference" do
             end
 
             li do
+              label '購買前同意事項'
+              f.textarea :name => "data[order_consent]" do
+                Preference.order_consent
+              end
+            end
+
+            li do
+              label '訂單自定欄位一：名稱 (留白表示停用)'
+              f.input :name => "data[order_custom_column_1_name]", :type => 'text', :value => Preference.order_custom_column_1_name
+            end
+
+            li do
+              label '訂單自定欄位一：選項 (格式為 JSON 陣列，留白表示自由填寫)'
+              f.textarea :name => "data[order_custom_column_1_options]" do
+                Preference.order_custom_column_1_options
+              end
+            end
+
+            li do
+              label '訂單自定欄位二：名稱 (留白表示停用)'
+              f.input :name => "data[order_custom_column_2_name]", :type => 'text', :value => Preference.order_custom_column_2_name
+            end
+
+            li do
+              label '訂單自定欄位二：選項 (格式為 JSON 陣列，留白表示自由填寫)'
+              f.textarea :name => "data[order_custom_column_2_options]" do
+                Preference.order_custom_column_2_options
+              end
+            end
+
+            li do
               label 'Tag 搜尋 placeholder'
               f.input :name => "data[tag_filter_placeholder]", :type => 'text', :value => Preference.tag_filter_placeholder
             end

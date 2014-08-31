@@ -23,6 +23,10 @@
           %th 訂購時間
           %th 價格
           %th 訂單狀態
+          - if Preference.order_custom_column_1_name.to_s != ''
+            %th= Preference.order_custom_column_1_name
+          - if Preference.order_custom_column_2_name.to_s != ''
+            %th= Preference.order_custom_column_2_name
       %tbody
         - if @orders.length == 0
           %tr
@@ -85,6 +89,10 @@
             - else
               %td.warning
                 = t("order.state.#{order.state}")
+            - if Preference.order_custom_column_1_name.to_s != ''
+              %td= order.custom_column_1
+            - if Preference.order_custom_column_2_name.to_s != ''
+              %td= order.custom_column_2
       %tfoot
         %tr
           %th
