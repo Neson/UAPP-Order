@@ -28,17 +28,44 @@ ActiveAdmin.register Order do
     column '訂單狀態' do |o|
       status_tag(o.state, :class => o.state)
     end
+    column '付款通知' do |o|
+      auto_link o.payment_report
+    end
     column '金額' do |o|
       number_to_currency o.price
     end
     actions
   end
 
-  show do |user|
+
+  show do |o|
     attributes_table do
-      row :title
-      row :image do
-        image_tag(ad.image.url)
+      row :id
+      row :user
+      row :product
+      row :state
+      row :price
+      row :payment_report
+      row :created_at
+      row :updated_at
+    end
+    panel "歷史狀態" do
+      table_for(o.states.order('created_at desc')) do |s|
+        column '更新時間' do |s|
+          s.created_at
+        end
+        column '操作使用者' do |s|
+          auto_link s.user
+        end
+        column '操作工作人員' do |s|
+          auto_link s.staff
+        end
+        column '動作' do |s|
+          status_tag(s.action, :class => s.action)
+        end
+        column '狀態' do |s|
+          status_tag(s.state, :class => s.state)
+        end
       end
     end
     active_admin_comments

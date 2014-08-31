@@ -5,7 +5,7 @@ class Order < ActiveRecord::Base
   belongs_to :product
   belongs_to :user
   has_many :states, class_name: "OrderState"
-  has_one :payment_report
+  belongs_to :payment_report
 
   after_create :set_new_state, :update_state
   after_update :update_state
@@ -16,8 +16,9 @@ class Order < ActiveRecord::Base
 
   def pay(oid, prid)
     if state == 'new' || state == 'confirming'
-      payment_report_id = prid
+      self.payment_report_id = prid
       save!
+      pr = PaymentReport.find(self.payment_report_id)
       set_state('user', oid, 'pay', 'confirming')
     else
       raise 'illegal action'

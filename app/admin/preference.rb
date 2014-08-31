@@ -30,8 +30,13 @@ ActiveAdmin.register_page "Preference" do
             end
 
             li do
-              label '文字'
-              f.input :name => "data[文字]", :type => 'text', :value => Preference.文字
+              label 'Tag 搜尋 placeholder'
+              f.input :name => "data[tag_filter_placeholder]", :type => 'text', :value => Preference.tag_filter_placeholder
+            end
+
+            li do
+              label '訂購截止時間 (格式: 2100-07-02 08:00)'
+              f.input :name => "data[order_deadline]", :type => 'text', :value => Preference.order_deadline
             end
 
           end
