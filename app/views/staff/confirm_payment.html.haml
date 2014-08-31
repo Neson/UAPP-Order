@@ -1,0 +1,30 @@
+.container.staff
+  %h1 審核付款通知
+  %table.ui.table.segment.sortable
+    %thead
+      %tr
+        %th 付款通知
+        %th 建立日期
+        %th 付款帳號
+        %th 付款時間
+        %th 金額
+        %th
+    %tbody
+      - @unconfirmed_payment_reports.each do |pr|
+        %tr
+          %td= "##{pr.id}"
+          %td= pr.created_at
+          %td= pr.account_number
+          %td= pr.datetime
+          %td= pr.amout
+          %td
+            = form_tag confirm_payment_path, method: "post" do
+              = hidden_field_tag :payment_report_id, pr.id
+              .ui.buttons
+                %a.ui.grey.button{href: "/staff/show_user_data?id=#{pr.orders.first.user.id}&uid=#{pr.orders.first.user.uid}", target: '_blank'} 查看購買者資料
+                .or
+                = submit_tag '確認收到', class: 'ui purple button', :data => { :confirm => "確定收到來自 #{pr.account_number} 的 #{pr.amout} 元款項嗎？一旦確認即無法復原。" }
+
+:coffee
+  $(document).ready ->
+    $('table.sortable').tablesort()

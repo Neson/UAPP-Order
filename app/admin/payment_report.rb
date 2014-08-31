@@ -73,8 +73,20 @@ ActiveAdmin.register PaymentReport do
   end
 
   form do |f|
-    f.inputs '訂單無法直接編輯，您只能刪除它 (小心)，或用 Staff 帳號登入來變更狀態。' do
+    f.inputs '付款通知無法直接編輯，您只能刪除它 (小心，刪除後訂單會回到未付款狀態)，或用 Staff 帳號登入來審核。' do
     end
     f.actions
+  end
+
+    controller do
+
+    def destroy
+      ActiveRecord::Base.transaction do
+        PaymentReport.find(params[:id]).orders.each do |o|
+          o.set_state('admin', 0, 'RPR', 'new')
+        end
+        super
+      end
+    end
   end
 end

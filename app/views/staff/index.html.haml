@@ -1,0 +1,28 @@
+.container.staff
+  %h1= "#{current_staff.username}，歡迎登入"
+  .ui.paper
+    .four.column.doubling.ui.grid.actions
+      .column
+        .ui.icon.header
+          %i.circular.checked.checkbox.icon
+          = link_to '審核付款通知', confirm_payment_path, class: 'ui massive button'
+          .sub.header 核對購買者回報的付款資料
+
+      .column
+        .ui.icon.header
+          %i.circular.dollar.icon
+          = link_to '收款', receive_payment_path, class: 'ui massive button'
+          .sub.header 向購買者收取款項
+
+      .column
+        .ui.icon.header
+          %i.circular.rocket.icon
+          = link_to '發送', deliver_path, class: 'ui massive button'
+          .sub.header 送貨
+
+      .column
+        .ui.icon.header
+          %i.circular.question.icon
+          = link_to '問題處理', issue_path, class: 'ui massive button'
+          .sub.header 處理產品客服問題
+

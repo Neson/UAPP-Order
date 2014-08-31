@@ -26,7 +26,11 @@ class Order < ActiveRecord::Base
   end
 
   def cancel(identity, oid)
-    set_state(identity, oid, 'cancel', 'cancelled')
+    if state == 'new'
+      set_state(identity, oid, 'cancel', 'cancelled')
+    else
+      raise 'illegal action'
+    end
   end
 
   def issue
@@ -38,8 +42,12 @@ class Order < ActiveRecord::Base
     current_staff
   end
 
-  def payment_confirmed
-    current_staff
+  def payment_confirmed(oid)
+    if state == 'confirming'
+      set_state('staff', oid, 'payment_confirmed', 'paid')
+    else
+      raise 'illegal action'
+    end
   end
 
   def delivered
@@ -70,6 +78,8 @@ class Order < ActiveRecord::Base
       s.user_id = oid
     elsif identity == 'staff'
       s.staff_id = oid
+    elsif identity == 'admin'
+      s.staff_id = nil
     else
       raise 'illegal identity'
     end

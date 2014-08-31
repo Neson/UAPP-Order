@@ -17,6 +17,16 @@ Rails.application.routes.draw do
   get 'my_orders' => 'orders#my_orders'
   get 'order_notice' => 'pages#order_notice'
 
+  get 'staff' => 'staff#index'
+  scope 'staff' do
+    get 'show_user_data' => 'staff#show_user_data'
+    get 'confirm_payment' => 'staff#confirm_payment'
+    post 'confirm_payment' => 'staff#confirm_payment_update'
+    get 'receive_payment' => 'staff#receive_payment'
+    get 'deliver' => 'staff#deliver'
+    get 'issue' => 'staff#issue'
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
