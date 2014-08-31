@@ -12,6 +12,7 @@
  *
  *= require normalize-rails
  *= require select2
+ *= require rome.min
  *= require_self
  */
 
@@ -86,4 +87,8 @@ $nprogress-color: $tertiary-colour;
 // -------------------------------------
 * {
 	// display: none;
+}
+
+.rd-container {
+	z-index: 9999 !important;
 }
