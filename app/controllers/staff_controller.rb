@@ -22,6 +22,60 @@ class StaffController < ApplicationController
     redirect_to confirm_payment_path
   end
 
+  def receive_payment
+  end
+
+  def receive_payment_show
+    @user = User.where('student_id = ?', params[:sid]).first
+    if @user.to_s == ''
+      flash[:alert] = '用戶不存在'
+      redirect_to receive_payment_path
+    else
+      @orders = @user.orders.where('state = ?', 'new')
+    end
+  end
+
+  def receive_payment_update
+    action_amount = 0
+    Order.transaction do
+      params[:order].each do |k, v|
+        if v.to_s == '1'
+          action_amount += 1
+          Order.find(k.to_i).payment_received(current_staff.id)
+        end
+      end
+      flash[:notice] = "#{action_amount} 筆訂單更新成功"
+    end
+    redirect_to receive_payment_path
+  end
+
+  def deliver
+  end
+
+  def deliver_show
+    @user = User.where('student_id = ?', params[:sid]).first
+    if @user.to_s == ''
+      flash[:alert] = '用戶不存在'
+      redirect_to receive_payment_path
+    else
+      @orders = @user.orders.where('state = ?', 'paid')
+    end
+  end
+
+  def deliver_update
+    action_amount = 0
+    Order.transaction do
+      params[:order].each do |k, v|
+        if v.to_s == '1'
+          action_amount += 1
+          Order.find(k.to_i).delivered(current_staff.id)
+        end
+      end
+      flash[:notice] = "#{action_amount} 筆訂單更新成功"
+    end
+    redirect_to deliver_path
+  end
+
   def show_user_data
     @user = User.where('uid = ?', params[:uid]).find(params[:id])
   end

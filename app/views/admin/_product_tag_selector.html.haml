@@ -1,0 +1,3 @@
+%select#tags.select2{name: "tags[]", multiple: "multiple", style: "min-width: 300px;", size: 99999}
+  - @friends.each do |friend|
+    %option{value: "#{friend['id']}"}= friend['name']

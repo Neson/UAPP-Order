@@ -1,0 +1,22 @@
+.container.staff.action
+  %h1 發送
+  .ui.vertical.center.wrapper{style: "min-height: 83vh; top: 0;"}
+    .ui.vertical.center
+      .ui.large.segment.box
+        .h3
+          %i.circular.rocket.icon
+        .ui.section.divider
+        %form{"accept-charset" => "UTF-8", :action => "/staff/deliver/show", :method => "get"}
+          .ui.left.labeled.icon.sid-c.input
+            %input#input-sid.sid{:autocomplete => "off", :autofocus => "autofocus", :name => "sid", :placeholder => "SID", :type => "text"}
+            %i.angle.right.icon
+            / .ui.corner.label
+            / .ui.red.pointing.above.ui.label.error-label 不合法
+          %input.ui.green.submit.button{:name => "commit", :type => "submit", :value => "OK"}
+        .ui.horizontal.divider
+          %i.icon 送
+          / %i.lock.icon
+
+:coffee
+  $(document).ready ->
+    $('table.sortable').tablesort()

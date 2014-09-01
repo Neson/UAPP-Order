@@ -38,8 +38,12 @@ class Order < ActiveRecord::Base
     current_userwhere
   end
 
-  def payment_received
-    current_staff
+  def payment_received(oid)
+    if state == 'new'
+      set_state('staff', oid, 'payment_received', 'paid')
+    else
+      raise 'illegal action'
+    end
   end
 
   def payment_confirmed(oid)
@@ -50,8 +54,12 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def delivered
-    current_staff
+  def delivered(oid)
+    if state == 'paid'
+      set_state('staff', oid, 'delivered', 'delivered')
+    else
+      raise 'illegal action'
+    end
   end
 
   def exchange

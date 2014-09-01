@@ -40,8 +40,9 @@
         .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[!@#$%^&*()'",\.]/, '_') }.join(' ')}
           .image{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
             %img{:src => product.image}
-            %a.ui.corner.label.provider
-              .text= product.provider.name
+            - if product.provider
+              %a.ui.corner.label.provider
+                .text= product.provider.name
           .content
             .name{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.name
             %p.description{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.description
@@ -91,7 +92,7 @@
                   %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
               .extra
                 - if Setting['show_purchases'].to_s == 'true'
-                  %span.purchases= product.id
+                  %span.purchases= product.orders.size
                   人買了這個
             .bottom.specification= simple_format product.specification
           .actions

@@ -16,3 +16,106 @@
 	}
 }
 
+.container.staff.action {
+
+	h1 {
+		@include opacity(.5);
+		position: absolute;
+	}
+
+	.box {
+		margin-top: 20px;
+		margin-bottom: 100px;
+
+		.h3 {
+			margin-top: 16px;
+		}
+	}
+
+	.input + .submit {
+		display: block;
+		margin: auto;
+		margin-top: 15px;
+	}
+
+	.list {
+		text-align: left;
+		display: inline-block;
+	}
+
+	.action.box {
+
+		.h3 {
+			display: inline-block;
+			float: left;
+			margin: 16px;
+		}
+
+		.name {
+			font-weight: 800;
+		}
+
+		.action {
+			height: 94px;
+			text-align: left;
+			font-size: 20px;
+			margin-bottom: -22px;
+			font-size: 32px;
+			line-height: 94px;
+
+			.actions {
+				display: inline-block;
+				float: right;
+			}
+
+			.or {
+				font-size: 17px;
+			}
+
+			.buttons {
+				margin: 0 8px;
+			}
+		}
+	}
+
+	.none {
+		font-size: 20px;
+		margin-bottom: 30px;
+		font-style: italic;
+		opacity: .8;
+		overflow: visible;
+		padding: 7px;
+	}
+
+	.item {
+
+		label {
+
+			&::before {
+				top: 11px;
+			}
+
+			&::after {
+				top: 17.6px;
+			}
+		}
+
+		.content {
+			float: right;
+		}
+
+		.code {
+			display: inline-block;
+			@include border-radius(100px);
+			border: 2px solid rgba(0,0,0, .4);
+			font-size: 50px;
+			line-height: 40px;
+			padding: 10px 15px;
+			font-family: 'Source Code Pro';
+			position: relative;
+			top: -5.7px;
+			left: -10px;
+			color: #222;
+		}
+	}
+}

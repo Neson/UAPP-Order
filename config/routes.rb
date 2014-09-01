@@ -23,7 +23,11 @@ Rails.application.routes.draw do
     get 'confirm_payment' => 'staff#confirm_payment'
     post 'confirm_payment' => 'staff#confirm_payment_update'
     get 'receive_payment' => 'staff#receive_payment'
+    get 'receive_payment/show' => 'staff#receive_payment_show'
+    post 'receive_payment' => 'staff#receive_payment_update'
     get 'deliver' => 'staff#deliver'
+    get 'deliver/show' => 'staff#deliver_show'
+    post 'deliver' => 'staff#deliver_update'
     get 'issue' => 'staff#issue'
   end
 
