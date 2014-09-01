@@ -3,14 +3,14 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 productsIsotope = ->
-  $container = $(".products.items").isotope(
+  window.$container = $(".products.items").isotope(
     itemSelector: ".product.item"
     layoutMode: "masonry"
     getSortData:
       name: ".name"
-      price: ".price"
-      purchases: ".purchases"
-      updateTime: "[data-updatedAt]"
+      price: ".price parseFloat"
+      purchases: ".purchases parseInt"
+      updateTime: "[data-updatedAt] parseInt"
       # weight: (itemElem) ->
       #   weight = $(itemElem).find(".weight").text()
       #   parseFloat weight.replace(/[\(\)]/g, "")
@@ -31,7 +31,7 @@ productsIsotope = ->
     setTimeout ->
       $('#tags.select').val('')
       $('#tags.select').select2()
-    , 10
+    , 100
 
   $(".filter-toggle").bind "click", ->
     filterValue = $(this).attr("data-filter")
@@ -39,14 +39,18 @@ productsIsotope = ->
     # console.log filterValue
     a = $('#tags.select').val()
     a.push(filterValue) if a
-    $('#tags.select').val a or [filterValue]
-    $('#tags.select').change()
-    $('#tags.select').select2()
+    setTimeout ->
+      $('#tags.select').val a or [filterValue]
+      $('#tags.select').change()
+      $('#tags.select').select2()
+    , 100
 
   $(".filter-shopping-cart").bind "click", ->
-    $('#tags select').val(['.active'])
-    $('#tags select').select2()
     $container.isotope filter: '.active'
+    setTimeout ->
+      $('#tags select').val(['.active'])
+      $('#tags select').select2()
+    , 100
 
   $('#tags.select').change ->
     # filterValue = $('#tags.select').val()?.join(', ')
@@ -56,7 +60,9 @@ productsIsotope = ->
   # bind sort button click
   $("#sorts").on "click", "a", ->
     sortByValue = $(this).attr("data-sort-by")
-    $container.isotope sortBy: sortByValue
+    $container.isotope
+      sortBy: sortByValue
+      sortAscending: false if sortByValue = 'purchases' or sortByValue = updateTime
 
   # change is-checked class on buttons
   $(".menu.controls").each (i, controls) ->

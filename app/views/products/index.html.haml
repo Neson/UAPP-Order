@@ -32,12 +32,12 @@
           價格
         - if Setting['show_purchases'].to_s == 'true'
           %a.item{"data-sort-by" => "purchases"}
-            %i.sort.order.ascending.icon
-            購買數量
+            %i.sort.order.descending.icon
+            購買熱門度
 
     .ui.products.items
       - @products.each do |product|
-        .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[!@#$%^&*()'",\.]/, '_') }.join(' ')}
+        .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at.to_time.to_i, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[!@#$%^&*()'",\.]/, '_') }.join(' ')}
           .image{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
             %img{:src => product.image}
             - if product.provider
