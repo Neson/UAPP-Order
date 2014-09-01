@@ -19,21 +19,21 @@
 // Z-index
 
 $zIndex-elements: backstage,
-                  	hero_content,
+                    hero_content,
                   background,
                   shadow,
                   container,
                   footer,
-                  	footer_content,
+                    footer_content,
                   main_background,
                   main,
-                  	main_content,
-                  	main_special,
+                    main_content,
+                    main_special,
                   ngprogress,
                   header,
-                  	header_content,
+                    header_content,
                   top_menu,
-                  	top_menu_content,
+                    top_menu_content,
                   trigger;
 
 // ----- Colors ----- //
@@ -59,9 +59,9 @@ $base-light-color: #fff;
 $base-dark-color: #222222;
 $base-link-color: #0053c9;
 
-$primary-color: $orange;
-$secondary-color: $blue;
-$tertiary-colour: $light-blue;
+$primary-color: <%= (Setting['app_primary_color'].to_s != '' && Setting['app_primary_color']) || '$orange' %>;
+$secondary-color: <%= (Setting['app_secondary_color'].to_s != '' && Setting['app_secondary_color']) || '$blue' %>;
+$tertiary-colour: <%= (Setting['app_tertiary_colour'].to_s != '' && Setting['app_tertiary_colour']) || '$light-blue' %>;
 
 // ----- Base Borders & Box Shadows ----- //
 

@@ -14,11 +14,10 @@ defaults: &defaults
   mailer_sender: <%= ENV["MAILER_SENDER"] %>
   mailgun_api_key: <%= ENV["MAILGUN_API_KEY"] %>
   mailgun_domain: <%= ENV["MAILGUN_DOMAIN"] %>
-  facebook_app_id: <%= ENV["FACEBOOK_APP_ID"] %>
-  facebook_app_secret: <%= ENV["FACEBOOK_APP_SECRET"] %>
   google_analytics_id: <%= ENV["GOOGLE_ANALYTICS_ID"] %>
-  email_regexp_s: <%= ENV["EMAIL_REGEXP_S"] %>
-  email_analysis_regexp_s: <%= ENV["EMAIL_ANALYSIS_REGEXP_S"] %>
+  app_primary_color: <%= ENV["APP_PRIMARY_COLOR"] %>
+  app_secondary_color: <%= ENV["APP_SECONDARY_COLOR"] %>
+  app_tertiary_colour: <%= ENV["APP_TERTIARY_COLOUR"] %>
 
 production:
   <<: *defaults
@@ -45,6 +44,7 @@ development:
   mailer_sender: ''
   mailgun_api_key: 'mailgun_api_key_here'
   mailgun_domain: 'mailgun_domain_here'
-  facebook_app_id: 'facebook_app_id_here'
-  facebook_app_secret: 'facebook_app_secret_here'
   google_analytics_id: ''
+  app_primary_color: ''
+  app_secondary_color: ''
+  app_tertiary_colour: ''
