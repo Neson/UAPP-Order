@@ -71,7 +71,7 @@
               - if Setting['show_purchases'].to_s == 'true'
                 %span.purchases= product.orders.size
                 人買了這個
-        .ui.product.modal.paper.z-depth-4{:class => "product_modal_#{product.id}"}
+        .ui.product.modal.paper.z-depth-4.top{:class => "product_modal_#{product.id}"}
           .header
             = product.name
           .content
@@ -118,7 +118,7 @@
               %a.ui.massive.frameless.button{onclick: "$('#before_order_form').modal('show');"} 送出訂單
             - else
               = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
-    #before_order_form.ui.small.modal.paper.z-depth-4
+    #before_order_form.ui.small.modal.paper.z-depth-4.top
       .header
         購買
       .content

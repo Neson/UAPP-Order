@@ -6,6 +6,10 @@
 	padding-top: 20px;
 	margin-bottom: 300px;
 
+	.top {
+		z-index: 999999;
+	}
+
 	.controls:first-of-type {
 		margin-top: 0 !important;
 	}
