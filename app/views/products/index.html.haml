@@ -94,7 +94,7 @@
                 - if Setting['show_purchases'].to_s == 'true'
                   %span.purchases= product.orders.size
                   人買了這個
-            .bottom.specification= simple_format product.specification
+            .bottom.specification= markdown_format product.specification
           .actions
             .ui.black.frameless.button
               關閉

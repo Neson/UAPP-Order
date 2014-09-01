@@ -48,6 +48,19 @@ module ApplicationHelper
     user_omniauth_authorize_path(:uapp)
   end
 
+  def markdown_format(s)
+    options = {
+      filter_html: true,
+      hard_wrap: true,
+      link_attributes: { rel: 'nofollow', target: "_blank" },
+      space_after_headers: true,
+      fenced_code_blocks: true
+    }
+    renderer = Redcarpet::Render::HTML.new(options)
+    markdown = Redcarpet::Markdown.new(renderer, autolink: true, tables: true)
+    markdown.render(s).html_safe
+  end
+
   def regexp_parse(s)
     s.gsub('$', '').gsub('.+', '').gsub('\.', '.')
   end
