@@ -295,6 +295,8 @@
 	> .detail, > * > .detail {
 		float: left;
 		margin-top: 28px;
+		max-height: 90px;
+		overflow: auto;
 	}
 
 	.price {
