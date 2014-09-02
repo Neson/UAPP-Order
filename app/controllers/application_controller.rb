@@ -46,12 +46,19 @@ class ApplicationController < ActionController::Base
   end
 
   def login_control
-    if cookies[:user_logined].to_s == "true"
-      if !current_user && params[:controller] != 'users/omniauth_callbacks'
-        redirect_to(user_omniauth_authorize_path(:uapp))
+    if params[:controller] != 'users/omniauth_callbacks'
+      if cookies[:login_token].to_s != ""
+        if !current_user
+          redirect_to(user_omniauth_authorize_path(:uapp))
+        else
+          if cookies[:login_token_gtime] < (Time.now - 1.days).to_i.to_s || Digest::MD5.hexdigest(Setting.site_secret_key + cookies[:login_token_gtime] + current_user.uid.to_s) != cookies[:login_token]
+            sign_out current_user
+            redirect_to(user_omniauth_authorize_path(:uapp))
+          end
+        end
+      elsif !!current_user
+        sign_out current_user
       end
-    elsif !!current_user
-      sign_out current_user
     end
   end
 
