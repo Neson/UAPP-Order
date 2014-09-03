@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   has_many :orders
 
-  def avator(size=100)
+  def avatar(size=100)
     'https://graph.facebook.com/' + fbid.to_s + '/picture?width=' + size.to_s + '&height=' + size.to_s
   end
 
