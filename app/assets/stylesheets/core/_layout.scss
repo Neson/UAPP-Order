@@ -29,6 +29,10 @@ body {
 	}
 }
 
+.flash_messages {
+	@include z-index('flash_messages');
+}
+
 body > .wrapper {
 	background-color: $base-body-backgroundColor;
 }
@@ -43,10 +47,13 @@ body > .wrapper > .main {
 	min-height: calc(100vh - #{$top-menu-height + $footer-height});
 	box-sizing: border-box;
 	padding-bottom: 20px;
+	margin-bottom: $footer-height;
 }
 
 body > .wrapper > .footer {
 	@include z-index(footer);
+	position: absolute;
+	bottom: 0;
 	height: $footer-height;
 	background-color: #333;
 
@@ -448,7 +455,7 @@ body > .wrapper > .footer {
 }
 
 .mobile.sidebar {
-	background-color: darken($primary-color, 20%);
+	background-color: darken($primary-color, 2%) !important;
 
 	.user {
 		width: 100%;
@@ -521,6 +528,7 @@ body > .wrapper > .footer {
 
 
 .apps.sidebar {
+	background-color: darken($primary-color, 10%) !important;
 
 	.name {
 		font-size: rem(24px);

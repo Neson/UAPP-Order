@@ -23,12 +23,13 @@ $zIndex-elements: backstage,
                   background,
                   shadow,
                   container,
-                  footer,
-                    footer_content,
                   main_background,
                   main,
                     main_content,
                     main_special,
+                  footer,
+                    footer_content,
+                  flash_messages,
                   ngprogress,
                   header,
                     header_content,
@@ -59,9 +60,9 @@ $base-light-color: #fff;
 $base-dark-color: #222222;
 $base-link-color: #0053c9;
 
-$primary-color: <%= (Setting['app_primary_color'].to_s != '' && Setting['app_primary_color']) || '$orange' %>;
-$secondary-color: <%= (Setting['app_secondary_color'].to_s != '' && Setting['app_secondary_color']) || '$blue' %>;
-$tertiary-colour: <%= (Setting['app_tertiary_colour'].to_s != '' && Setting['app_tertiary_colour']) || '$light-blue' %>;
+$primary-color: <%= (ENV["APP_PRIMARY_COLOR"].to_s != '' && ENV["APP_PRIMARY_COLOR"]) || '$orange' %>;
+$secondary-color: <%= (ENV["APP_SECONDARY_COLOR"].to_s != '' && ENV["APP_SECONDARY_COLOR"]) || '$blue' %>;
+$tertiary-colour: <%= (ENV["APP_TERTIARY_COLOUR"].to_s != '' && ENV["APP_TERTIARY_COLOUR"]) || '$light-blue' %>;
 
 // ----- Base Borders & Box Shadows ----- //
 
