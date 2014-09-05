@@ -20,6 +20,7 @@
 //= require jquery.tablesort.min
 //= require moment
 //= require rome.standalone.min
+//= require countdown.min
 //
 //= require_tree ./lib/
 //= require_tree ./pages/

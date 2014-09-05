@@ -2,6 +2,28 @@
   .container.products
     - if Preference.products_head.to_s != ''
       .products_head= Preference.products_head.html_safe
+    - if Preference.show_order_time_countdown
+      .order_time_countdown#order_time_countdown
+      - if Preference.order_starttime.to_s != '' && Time.now > Preference.order_starttime.to_time
+        - if Preference.order_deadline.to_s != ''
+          :javascript
+            ct = '距離結束時間還剩';
+            ctime = "#{Preference.order_deadline.to_s}";
+      - elsif Preference.order_starttime.to_s != ''
+        :javascript
+          ct = '距離開始時間還剩';
+          ctime = "#{Preference.order_starttime.to_s}";
+      :javascript
+        if (ctime) {
+          countdown(
+            new Date(ctime),
+            function(ts) {
+              document.getElementById('order_time_countdown').innerHTML = ct + ' ' + ts.toHTML("strong").replace(/years?/g, '年').replace(/months?/g, '個月').replace(/days?/g, '天').replace(/hours?/g, '個小時').replace(/minutes?/g, '分鐘').replace(/seconds?/g, '秒').replace(/and/g, '又').replace(/,/g, '');
+            }
+          );
+
+        }
+
     .ui.text.menu.controls#tags
       .header.item 標籤篩選
       .item

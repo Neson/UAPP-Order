@@ -17,11 +17,11 @@ module ApplicationHelper
   end
 
   def app_logo
-    if Setting.app_logo.to_s != ''
-      if Setting.app_logo.to_s.match(/^</)  # if SVG path
-        Setting.app_logo.to_s.html_safe
+    if Preference.app_logo.to_s != ''
+      if Preference.app_logo.to_s.match(/^</)  # if SVG path
+        Preference.app_logo.to_s.html_safe
       else
-        image_tag Setting.app_logo
+        image_tag Preference.app_logo
       end
     else
       Setting.app_name

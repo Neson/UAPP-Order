@@ -9,6 +9,13 @@ ActiveAdmin.register_page "Preference" do
           ol do
 
             li do
+              label 'LOGO (可以是圖片網址、或是 svg 向量圖)'
+              f.textarea :name => "data[app_logo]" do
+                Preference.app_logo
+              end
+            end
+
+            li do
               label '商品目錄頁首文字'
               f.textarea :name => "data[products_head]" do
                 Preference.products_head
@@ -75,6 +82,12 @@ ActiveAdmin.register_page "Preference" do
               f.input :name => "data[order_deadline]", :type => 'text', :value => Preference.order_deadline
             end
 
+            li do
+              label '顯示開始、結束時間倒數'
+              f.input :id => "cb-show_order_time_countdown", :type => 'checkbox', :onchange => "if (this.checked) { document.getElementById('ip-show_order_time_countdown').value = 'true'; } else { document.getElementById('ip-show_order_time_countdown').value = 'false'; }", :checked => ('checked' if Preference.show_order_time_countdown)
+              f.input :name => "data[show_order_time_countdown]", :id => "ip-show_order_time_countdown", :type => 'hidden'
+            end
+
           end
         end
       end
@@ -84,6 +97,8 @@ ActiveAdmin.register_page "Preference" do
 
   page_action :update, :method => :post do
     params['data'].each do |k, v|
+      v = true if v.to_s == 'true'
+      v = false if v.to_s == 'false'
       Preference[k] = v
     end
     redirect_to :back, :notice => "設定已更新"
