@@ -60,9 +60,9 @@ $base-light-color: #fff;
 $base-dark-color: #222222;
 $base-link-color: #0053c9;
 
-$primary-color: <%= (ENV["APP_PRIMARY_COLOR"].to_s != '' && ENV["APP_PRIMARY_COLOR"]) || '$orange' %>;
-$secondary-color: <%= (ENV["APP_SECONDARY_COLOR"].to_s != '' && ENV["APP_SECONDARY_COLOR"]) || '$blue' %>;
-$tertiary-colour: <%= (ENV["APP_TERTIARY_COLOUR"].to_s != '' && ENV["APP_TERTIARY_COLOUR"]) || '$light-blue' %>;
+$primary-color: <%= ENV["APP_PRIMARY_COLOR"] %>;
+$secondary-color: <%= ENV["APP_PRIMARY_COLOR"] %>;
+$tertiary-colour: <%= ENV["APP_PRIMARY_COLOR"] %>;
 
 // ----- Base Borders & Box Shadows ----- //
 
