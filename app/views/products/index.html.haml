@@ -5,7 +5,7 @@
     - if Preference.show_order_time_countdown
       .order_time_countdown#order_time_countdown
       - if Preference.order_starttime.to_s != '' && Time.now > Preference.order_starttime.to_time
-        - if Preference.order_deadline.to_s != ''
+        - if Preference.order_deadline.to_s != '' && Time.now < Preference.order_deadline.to_time
           :javascript
             ct = '距離結束時間還剩';
             ctime = "#{Preference.order_deadline.to_s}";

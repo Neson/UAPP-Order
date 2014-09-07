@@ -73,12 +73,12 @@ ActiveAdmin.register_page "Preference" do
             end
 
             li do
-              label '訂購開始時間 (格式: 2100-07-02 08:00) (留白表示不限制)'
+              label '訂購開始時間 (格式: 2100-07-02 08:00 +0800) (留白表示不限制)'
               f.input :name => "data[order_starttime]", :type => 'text', :value => Preference.order_starttime
             end
 
             li do
-              label '訂購截止時間 (格式: 2100-07-02 08:00) (留白表示不限制)'
+              label '訂購截止時間 (格式: 2100-07-02 08:00 +0800) (留白表示不限制)'
               f.input :name => "data[order_deadline]", :type => 'text', :value => Preference.order_deadline
             end
 
