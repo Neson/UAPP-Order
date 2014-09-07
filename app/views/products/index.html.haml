@@ -1,7 +1,7 @@
 = form_tag new_order_path, method: "post" do
   .container.products
     - if Preference.products_head.to_s != ''
-      .products_head= Preference.products_head.html_safe
+      .products_head= markdown_format Preference.products_head
     - if Preference.show_order_time_countdown
       .order_time_countdown#order_time_countdown
       - if Preference.order_starttime.to_s != '' && Time.now > Preference.order_starttime.to_time
