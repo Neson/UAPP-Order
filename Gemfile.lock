@@ -178,6 +178,7 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    newrelic_rpm (3.9.3.241)
     normalize-rails (3.0.1)
     nprogress-rails (0.1.3.1)
     oauth2 (1.0.0)
@@ -311,6 +312,7 @@ DEPENDENCIES
   mailgunner (~> 2.0.0)
   markdown-rails
   modernizr-rails
+  newrelic_rpm
   normalize-rails (>= 3.0.1)
   nprogress-rails (~> 0.1.3.1)
   omniauth-oauth2 (= 1.2.0)

@@ -16,9 +16,7 @@ defaults: &defaults
   mailgun_api_key: <%= ENV["MAILGUN_API_KEY"] %>
   mailgun_domain: <%= ENV["MAILGUN_DOMAIN"] %>
   google_analytics_id: <%= ENV["GOOGLE_ANALYTICS_ID"] %>
-  app_primary_color: <%= ENV["APP_PRIMARY_COLOR"] %>
-  app_secondary_color: <%= ENV["APP_SECONDARY_COLOR"] %>
-  app_tertiary_colour: <%= ENV["APP_TERTIARY_COLOUR"] %>
+  newrelic_license_key: <%= ENV["NEWRELIC_LICENSE_KEY"] %>
 
 production:
   <<: *defaults
@@ -41,12 +39,10 @@ development:
   app_domain: 'order.ntust.dev'
   app_url: 'http://order.ntust.dev/'
   show_purchases: 'false'
-  administrator_email: ''
-  administrator_url: ''
-  mailer_sender: ''
+  administrator_email: 'administrator_email_here'
+  administrator_url: 'administrator_url_here'
+  mailer_sender: 'please-change-me-at-config-configuration@example.com'
   mailgun_api_key: 'mailgun_api_key_here'
   mailgun_domain: 'mailgun_domain_here'
-  google_analytics_id: ''
-  app_primary_color: ''
-  app_secondary_color: ''
-  app_tertiary_colour: ''
+  google_analytics_id: 'google_analytics_id_here'
+  newrelic_license_key: 'newrelic_license_key_here'
