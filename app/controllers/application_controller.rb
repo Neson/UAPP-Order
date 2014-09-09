@@ -12,10 +12,6 @@ class ApplicationController < ActionController::Base
   end
 
   def get_app_setting
-    # The settings are loaded with '/app/models/setting.rb'
-    @app_name = Setting.app_name
-    @google_analytics_id = Setting.google_analytics_id
-
     # Get data from Core and store it into cache
     if !Rails.cache.read("uapp_data") || params['exc'] == "true"
       uapp_data = HTTParty.get Setting.uapp_url + '/api/v1/site_data.json'
@@ -30,6 +26,10 @@ class ApplicationController < ActionController::Base
     Setting['administrator_email'] = @uapp_data['administrator_email'] if Setting['administrator_email'].to_s == ''
     Setting['mailer_sender'] = @uapp_data['mailer_sender'] if Setting['mailer_sender'].to_s == ''
     Setting['google_analytics_id'] = @uapp_data['google_analytics_id'] if Setting['google_analytics_id'].to_s == ''
+
+    # The settings are loaded with '/app/models/setting.rb'
+    @app_name = Setting.app_name
+    @google_analytics_id = Setting.google_analytics_id
   end
 
   def can_order

@@ -28,12 +28,20 @@ module ApplicationHelper
     end
   end
 
+  def site_announcement
+    Rails.cache.read("uapp_data")['site_announcement'] && markdown_format(Rails.cache.read("uapp_data")['site_announcement']).gsub(/\<\/?p\>/, '').html_safe
+  end
+
   def apps_navigation
     Rails.cache.read("uapp_data")['site_navigation']
   end
 
   def apps_menu
     Rails.cache.read("uapp_data")['site_menu']
+  end
+
+  def page_footer
+    Rails.cache.read("uapp_data")['page_footer'] && Rails.cache.read("uapp_data")['page_footer'].html_safe
   end
 
   def default_authorize_path
