@@ -50,6 +50,8 @@ class User < ActiveRecord::Base
     user.department_code = auth.info.department_code
     user.admission_department = auth.info.admission_department
     user.department = auth.info.department
+
+    user.data_update_time = Time.now
     return user
   end
 end

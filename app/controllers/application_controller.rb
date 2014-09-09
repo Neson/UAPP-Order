@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
         if !current_user
           redirect_to(user_omniauth_authorize_path(:uapp))
         else
-          if cookies[:login_token_gtime] < (Time.now - 1.days).to_i.to_s || Digest::MD5.hexdigest(Setting.site_secret_key + cookies[:login_token_gtime] + current_user.uid.to_s) != cookies[:login_token]
+          if cookies[:login_token_gtime] < (Time.now - 1.days).to_i.to_s || Digest::MD5.hexdigest(Setting.site_secret_key + cookies[:login_token_gtime] + current_user.uid.to_s) != cookies[:login_token] || (cookies[:login_update_time] && cookies[:login_update_time] > current_user.data_update_time.to_i.to_s)
             sign_out current_user
             redirect_to(user_omniauth_authorize_path(:uapp))
           end
