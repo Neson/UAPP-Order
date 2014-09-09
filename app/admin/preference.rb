@@ -84,7 +84,7 @@ ActiveAdmin.register_page "Preference" do
 
             li do
               label '顯示開始、結束時間倒數'
-              f.input :id => "cb-show_order_time_countdown", :type => 'checkbox', :onchange => "if (this.checked) { document.getElementById('ip-show_order_time_countdown').value = 'true'; } else { document.getElementById('ip-show_order_time_countdown').value = 'false'; }", :checked => ('checked' if Preference.show_order_time_countdown)
+              f.input :id => "cb-show_order_time_countdown", :type => 'checkbox', :onchange => "if (this.checked) { document.getElementById('ip-show_order_time_countdown').value = 'true'; } else { document.getElementById('ip-show_order_time_countdown').value = 'false'; }", "#{Preference.show_order_time_countdown ? 'checked' : 'not_checked'}" => ( Preference.show_order_time_countdown ? 'true' : 'false' )
               f.input :name => "data[show_order_time_countdown]", :id => "ip-show_order_time_countdown", :type => 'hidden'
             end
 
