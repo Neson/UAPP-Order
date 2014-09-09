@@ -31,7 +31,8 @@ module OmniAuth
           :admission_department => raw_info["admission_department"],
           :department => raw_info["department"],
           :fbid => raw_info["fbid"],
-          :fbtoken => raw_info["fbtoken"]
+          :fbtoken => raw_info["fbtoken"],
+          :settings => raw_info["settings"]
         }
       end
 

@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include RailsSettings::Extend
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :rememberable, :trackable, :validatable
@@ -32,6 +33,10 @@ class User < ActiveRecord::Base
       user.email = "#{auth.uid}@uapp.app"
       user.password = Devise.friendly_token[0,20]
       user.name = auth.info.name
+    end
+
+    auth.info['settings'].each do |k, v|
+      user.settings[k] = v
     end
 
     user.fbid = auth.info.fbid
