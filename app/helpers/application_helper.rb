@@ -29,19 +29,11 @@ module ApplicationHelper
   end
 
   def apps_navigation
-    if Rails.cache.read("apps_navigation").to_s == '' || params['exc'] == "true"
-      data = HTTParty.get Setting.uapp_url + '/api/v1/site_navigation.json'
-      Rails.cache.write("apps_navigation", data.parsed_response, :expires_in => 10.minutes)
-    end
-    Rails.cache.read("apps_navigation")
+    Rails.cache.read("uapp_data")['site_navigation']
   end
 
   def apps_menu
-    if Rails.cache.read("apps_menu").to_s == '' || params['exc'] == "true"
-      data = HTTParty.get Setting.uapp_url + '/api/v1/site_menu.json'
-      Rails.cache.write("apps_menu", data.parsed_response, :expires_in => 10.minutes)
-    end
-    Rails.cache.read("apps_menu")
+    Rails.cache.read("uapp_data")['site_menu']
   end
 
   def default_authorize_path

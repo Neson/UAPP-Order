@@ -15,10 +15,14 @@ class ApplicationController < ActionController::Base
     # The settings are loaded with '/app/models/setting.rb'
     @app_name = Setting.app_name
     @google_analytics_id = Setting.google_analytics_id
-    if !Rails.cache.read("uapp_data")
+
+    # Get data from Core and store it into cache
+    if !Rails.cache.read("uapp_data") || params['exc'] == "true"
       uapp_data = HTTParty.get Setting.uapp_url + '/api/v1/site_data.json'
-      Rails.cache.write("uapp_data", uapp_data.parsed_response)
+      Rails.cache.write("uapp_data", uapp_data.parsed_response, :expires_in => 30.minutes)
     end
+
+    # Fallback to Site Setting if App Setting dosen't exists
     @uapp_data = Rails.cache.read("uapp_data")
     Setting['site_name'] = @uapp_data['site_name'] if Setting['site_name'].to_s == ''
     Setting['org_name'] = @uapp_data['org_name'] if Setting['org_name'].to_s == ''
