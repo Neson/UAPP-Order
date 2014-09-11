@@ -32,6 +32,14 @@ class ApplicationController < ActionController::Base
     @google_analytics_id = Setting.google_analytics_id
   end
 
+  def after_sign_in_path_for(resource)
+    if resource.class == Staff
+      staff_path
+    else
+      super
+    end
+  end
+
   def can_order
     if Preference.order_deadline.to_s != '' && Time.parse(Preference.order_deadline) < Time.now
       return false
