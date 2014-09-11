@@ -54,4 +54,23 @@ class User < ActiveRecord::Base
     user.data_update_time = Time.now
     return user
   end
+
+  def self.from_rfid(code, return_raw_data=false)
+    get_data_connection = HTTParty.get("#{Setting.uapp_url}/api/v1/rfid_scan/#{code}.json?application_id=#{Setting.uapp_app_id}&secret=#{Setting.uapp_app_secret}")
+    if get_data_connection.code == 200
+      user_uid = get_data_connection.parsed_response['uid']
+      user = where({:uid => user_uid}).first
+      if !!user
+        return user
+      else
+        if return_raw_data
+          return get_data_connection.parsed_response
+        else
+          return nil
+        end
+      end
+    else
+      return nil
+    end
+  end
 end
