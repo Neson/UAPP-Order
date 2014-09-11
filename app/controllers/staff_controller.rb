@@ -86,6 +86,38 @@ class StaffController < ApplicationController
     redirect_to deliver_path
   end
 
+  def issue
+  end
+
+  def issue_show
+    @user = User.where('student_id = ?', params[:sid]).first
+    @user = User.from_rfid(params[:sid]) if @user.to_s == ''
+    if @user.to_s == ''
+      flash[:alert] = '用戶不存在'
+      redirect_to receive_payment_path
+    else
+      @orders = @user.orders.where(['state = ?', 'delivered'])
+    end
+  end
+
+  def issue_update
+    action_amount = 0
+    Order.transaction do
+      if !!params[:order]
+        params[:order].each do |k, v|
+          if v.to_s == '1'
+            action_amount += 1
+            Order.find(k.to_i).issue(current_staff.id)
+          end
+        end
+        flash[:notice] = "#{action_amount} 筆訂單已標記為「客服問題」"
+      else
+        flash[:notice] = "沒有更新"
+      end
+    end
+    redirect_to issue_path
+  end
+
   def show_user_data
     @user = User.where('uid = ?', params[:uid]).find(params[:id])
   end

@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     get 'deliver/show' => 'staff#deliver_show'
     post 'deliver' => 'staff#deliver_update'
     get 'issue' => 'staff#issue'
+    get 'issue/show' => 'staff#issue_show'
+    post 'issue' => 'staff#issue_update'
   end
 
   # Example of regular route:

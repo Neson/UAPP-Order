@@ -1,0 +1,40 @@
+%link{:href => "http://fonts.googleapis.com/css?family=Source+Code+Pro", :rel => "stylesheet", :type => "text/css"}/
+= form_tag issue_path, :method => "post" do
+  .container.staff.action
+    %h1 標記問題
+    .ui.vertical.center.wrapper{style: "min-height: 83vh; top: 0;"}
+      .ui.vertical.center
+        .ui.large.segment.action.box
+          .h3
+            %i.circular.rocket.icon{style: "background-image: url(#{@user.avatar}); background-size: 100%; text-shadow: 0 0 4px rgba(255,255,255, 1); text-shadow: 0 0 7px rgba(255,255,255, 0.7), 0 0 6px rgba(255,255,255, .8), 0 0 5px rgba(255,255,255, .9), 0 0 4px rgba(255,255,255, 1);"}
+          .action
+            %span.name= @user.name
+            .actions
+              /NT$
+              /%span#amount
+              .ui.buttons
+                %a.ui.grey.large.button{href: deliver_path} 取消
+                - if @orders.size != 0
+                  .or
+                  = submit_tag '確認', class: "ui positive large button"
+          .ui.section.divider
+
+          .ui.massive.list
+            - if @orders.size == 0
+              .none 沒有任何記錄
+            - @orders.each do |order|
+              .item
+                .ui.checkbox
+                  = check_box_tag "order[#{order.id}]", 1, false
+                  %label
+                    .content
+                      %a.header= order.product.name
+                      .description
+                        NT$
+                        %span.price= order.product.price
+                    - if order.product.code.to_s != ''
+                      .code= order.product.code
+
+:coffee
+  $(document).ready ->
+    $('table.sortable').tablesort()

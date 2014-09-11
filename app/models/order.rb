@@ -26,16 +26,19 @@ class Order < ActiveRecord::Base
   end
 
   def cancel(identity, oid)
-    if state == 'new'
+    if state == 'delivered'
       set_state(identity, oid, 'cancel', 'cancelled')
     else
       raise 'illegal action'
     end
   end
 
-  def issue
-    current_staff
-    current_userwhere
+  def issue(oid)
+    if state == 'delivered'
+      set_state('staff', oid, 'issue', 'problem')
+    else
+      raise 'illegal action'
+    end
   end
 
   def payment_received(oid)
