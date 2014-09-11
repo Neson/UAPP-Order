@@ -39,13 +39,17 @@ class StaffController < ApplicationController
   def receive_payment_update
     action_amount = 0
     Order.transaction do
-      params[:order].each do |k, v|
-        if v.to_s == '1'
-          action_amount += 1
-          Order.find(k.to_i).payment_received(current_staff.id)
+      if !!params[:order]
+        params[:order].each do |k, v|
+          if v.to_s == '1'
+            action_amount += 1
+            Order.find(k.to_i).payment_received(current_staff.id)
+          end
         end
+        flash[:notice] = "#{action_amount} 筆訂單更新成功"
+      else
+        flash[:notice] = "沒有更新"
       end
-      flash[:notice] = "#{action_amount} 筆訂單更新成功"
     end
     redirect_to receive_payment_path
   end
@@ -67,13 +71,17 @@ class StaffController < ApplicationController
   def deliver_update
     action_amount = 0
     Order.transaction do
-      params[:order].each do |k, v|
-        if v.to_s == '1'
-          action_amount += 1
-          Order.find(k.to_i).delivered(current_staff.id)
+      if !!params[:order]
+        params[:order].each do |k, v|
+          if v.to_s == '1'
+            action_amount += 1
+            Order.find(k.to_i).delivered(current_staff.id)
+          end
         end
+        flash[:notice] = "#{action_amount} 筆訂單更新成功"
+      else
+        flash[:notice] = "沒有更新"
       end
-      flash[:notice] = "#{action_amount} 筆訂單更新成功"
     end
     redirect_to deliver_path
   end
