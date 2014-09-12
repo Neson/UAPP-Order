@@ -74,8 +74,11 @@
                   NT$
                   %span.original_price= product.original_price
             .money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
-              NT$
-              %span.price= product.price
+              - if !product.hide_price
+                NT$
+                %span.price= product.price
+              - else
+                %span.price 價格請洽詢，或直接下單
             .tags
               - product.tags.each do |tag|
                 %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
@@ -107,8 +110,11 @@
                     NT$
                     %span.original_price= product.original_price
               .money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
-                NT$
-                %span.price= product.price
+                - if !product.hide_price
+                  NT$
+                  %span.price= product.price
+                - else
+                  %span.price 價格請洽詢，或直接下單
               .tags
                 - product.tags.each do |tag|
                   %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name

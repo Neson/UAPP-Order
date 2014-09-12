@@ -1,7 +1,7 @@
 ActiveAdmin.register Product do
   menu priority: 50
 
-  permit_params :code, :name, :description, :specification, :image, :original_price, :price, :provider, :provider_id, product_tags_attributes: [:product_id, :tag_id]
+  permit_params :code, :name, :description, :specification, :image, :original_price, :price, :hide_price, :provider, :provider_id, product_tags_attributes: [:product_id, :tag_id]
 
   config.sort_order = "code_asc"
 
@@ -31,6 +31,7 @@ ActiveAdmin.register Product do
       row :specification
       row :original_price
       row :price
+      row :hide_price
       row :tags do |p|
         p.tags.map { |t| t.name }.join ', '
       end
