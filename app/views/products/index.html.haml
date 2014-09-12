@@ -15,7 +15,7 @@
             ct = '距離開始時間還剩';
             ctime = "#{Preference.order_starttime.to_s}";
         :javascript
-          if (ctime) {
+          if (typeof(ctime) !== 'undefined') {
             countdown(
               new Date(ctime),
               function(ts) {
@@ -80,6 +80,7 @@
                   %span.price= product.price
                 - else
                   價格請洽詢，或直接下單
+                  %span.price.hide= "less_then#{product.original_price}"
               .tags
                 - product.tags.each do |tag|
                   %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
@@ -116,6 +117,7 @@
                     %span.price= product.price
                   - else
                     價格請洽詢，或直接下單
+                    %span.price.hide= "less_then#{product.original_price}"
                 .tags
                   - product.tags.each do |tag|
                     %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
@@ -239,6 +241,7 @@
       itemsArr = []
       totalP = 0
       orderD = {}
+      pType = 'absolute'
       prevTotalP = $('.total-price').html()
       $('.product.item').each ->
         ci = $(this).find('.buy input')
@@ -249,13 +252,20 @@
           $(this).addClass('active')
           p = $(this).find('.price').html()
           n = $(this).find('.name').html()
+          if !!p.match(/^less_then/)
+            p = p.replace(/^less_then/, '')
+            pType = 'relative'
           totalP += p*c
+          console.log p
           shoppingCartItem = '<div class="ui blue label">' + n + '<div class="detail">×' + c + '</div><i class="delete icon" onclick="$(\'#' + ci.attr('id') + '\').val(null); updateForm();"></i></div>'
           itemsArr.push shoppingCartItem
         else
           $(this).removeClass('active')
       $('.items-detail').html itemsArr.join(' <span>+</span> ')
-      $('.total-price').html totalP
+      if pType == 'relative'
+        $('.total-price').html '< ' + totalP
+      else
+        $('.total-price').html totalP
       if itemsArr.length > 0
         $('.orders.w').addClass('active')
       else
