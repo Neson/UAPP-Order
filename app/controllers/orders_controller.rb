@@ -3,6 +3,7 @@ class OrdersController < ApplicationController
 
   def batch_create
     if can_order
+      expire_cache(:key => ['products_index', @latest_product.updated_at].join(':')) do
       Order.transaction do
         params[:order].each do |id, q|
           raise 'too many!' if q.to_i > 100

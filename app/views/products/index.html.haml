@@ -1,108 +1,73 @@
-= form_tag new_order_path, method: "post" do
-  .container.products
-    - if Preference.products_head.to_s != ''
-      .products_head= markdown_format Preference.products_head
-    - if Preference.show_order_time_countdown
-      .order_time_countdown#order_time_countdown
-      - if Preference.order_starttime.to_s != '' && Time.now > Preference.order_starttime.to_time
-        - if Preference.order_deadline.to_s != '' && Time.now < Preference.order_deadline.to_time
+- cache(:key => ['products_index', @latest_product.updated_at].join(':'), :expires_in => 1.hour) do
+  = form_tag new_order_path, method: "post" do
+    .container.products
+      - if Preference.products_head.to_s != ''
+        .products_head= markdown_format Preference.products_head
+      - if Preference.show_order_time_countdown
+        .order_time_countdown#order_time_countdown
+        - if Preference.order_starttime.to_s != '' && Time.now > Preference.order_starttime.to_time
+          - if Preference.order_deadline.to_s != '' && Time.now < Preference.order_deadline.to_time
+            :javascript
+              ct = '距離結束時間還剩';
+              ctime = "#{Preference.order_deadline.to_s}";
+        - elsif Preference.order_starttime.to_s != ''
           :javascript
-            ct = '距離結束時間還剩';
-            ctime = "#{Preference.order_deadline.to_s}";
-      - elsif Preference.order_starttime.to_s != ''
+            ct = '距離開始時間還剩';
+            ctime = "#{Preference.order_starttime.to_s}";
         :javascript
-          ct = '距離開始時間還剩';
-          ctime = "#{Preference.order_starttime.to_s}";
-      :javascript
-        if (ctime) {
-          countdown(
-            new Date(ctime),
-            function(ts) {
-              document.getElementById('order_time_countdown').innerHTML = ct + ' ' + ts.toHTML("strong").replace(/years?/g, '年').replace(/months?/g, '個月').replace(/days?/g, '天').replace(/hours?/g, '個小時').replace(/minutes?/g, '分鐘').replace(/seconds?/g, '秒').replace(/and/g, '又').replace(/,/g, '');
-            }
-          );
+          if (ctime) {
+            countdown(
+              new Date(ctime),
+              function(ts) {
+                document.getElementById('order_time_countdown').innerHTML = ct + ' ' + ts.toHTML("strong").replace(/years?/g, '年').replace(/months?/g, '個月').replace(/days?/g, '天').replace(/hours?/g, '個小時').replace(/minutes?/g, '分鐘').replace(/seconds?/g, '秒').replace(/and/g, '又').replace(/,/g, '');
+              }
+            );
 
-        }
+          }
 
-    .ui.text.menu.controls#tags
-      .header.item 標籤篩選
-      .item
-        %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;", placeholder: Preference.tag_filter_placeholder}
-          - Tag.all.each do |tag|
-            %option{value: "#{'.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}"}= tag.name
-            / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
-          %option{value: ".active"} 購物車內項目
-      .item
-        %i.info.icon
-        可以按下 ctrl(command) + F 來搜尋
-        / #filters
-        /   顯示
-        /   %a{"data-filter" => "buy", :href => 'javascript:void(0)' } 購物車內項目
-        /   %a{"data-filter" => "", :href => 'javascript:void(0)' } 所有項目
+      .ui.text.menu.controls#tags
+        .header.item 標籤篩選
+        .item
+          %select#tags.select2.select{name: "tags[]", multiple: "multiple", style: "min-width: 300px;", placeholder: Preference.tag_filter_placeholder}
+            - @tags.each do |tag|
+              %option{value: "#{'.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}"}= tag.name
+              / %option{value: "#{tag['id']}", selected: "selected"}= tag['name']
+            %option{value: ".active"} 購物車內項目
+        .item
+          %i.info.icon
+          可以按下 ctrl(command) + F 來搜尋
+          / #filters
+          /   顯示
+          /   %a{"data-filter" => "buy", :href => 'javascript:void(0)' } 購物車內項目
+          /   %a{"data-filter" => "", :href => 'javascript:void(0)' } 所有項目
 
-    .ui.text.menu.controls#sorts
-      .header.item 排序方式
-      .group
-        %a.active.item{"data-sort-by" => "name"}
-          %i.sort.alphabet.ascending.icon
-          名稱
-        %a.item{"data-sort-by" => "updateTime"}
-          %i.time.icon
-          更新日期
-        %a.item{"data-sort-by" => "price"}
-          %i.dollar.icon
-          價格
-        - if Setting['show_purchases'].to_s == 'true'
-          %a.item{"data-sort-by" => "purchases"}
-            %i.sort.order.descending.icon
-            購買熱門度
+      .ui.text.menu.controls#sorts
+        .header.item 排序方式
+        .group
+          %a.active.item{"data-sort-by" => "name"}
+            %i.sort.alphabet.ascending.icon
+            名稱
+          %a.item{"data-sort-by" => "updateTime"}
+            %i.time.icon
+            更新日期
+          %a.item{"data-sort-by" => "price"}
+            %i.dollar.icon
+            價格
+          - if Setting['show_purchases'].to_s == 'true'
+            %a.item{"data-sort-by" => "purchases"}
+              %i.sort.order.descending.icon
+              購買熱門度
 
-    .ui.products.items
-      - @products.each do |product|
-        .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at.to_time.to_i, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[!@#$%^&*()'",\.]/, '_') }.join(' ')}
-          .image{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
-            %img{:src => product.image}
-            - if product.provider
-              %a.ui.corner.label.provider
-                .text= product.provider.name
-          .content
-            .name{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.name
-            %p.description{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.description
-            - if product.original_price
-              .original_money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
-                %span.cross
-                  NT$
-                  %span.original_price= product.original_price
-            .money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
-              - if !product.hide_price
-                NT$
-                %span.price= product.price
-              - else
-                %span.price 價格請洽詢，或直接下單
-            .tags
-              - product.tags.each do |tag|
-                %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
-            - if @can_order
-              .buy
-                購買數量：
-                .ui.input
-                  %input{:id => "order_#{product.id}", :name => "order[#{product.id}]", :placeholder => "數量", :type => "number", :min => "0", :max => "50", :step => ""}
-                  / .ui.icon.buttons
-                .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
-                  %i.add.icon
-                .ui.frameless.grey.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) - 1 ); updateForm();"}
-                  %i.minus.icon
-            .extra
-              - if Setting['show_purchases'].to_s == 'true'
-                %span.purchases= product.orders.size
-                人買了這個
-        .ui.product.modal.paper.z-depth-4.top{:class => "product_modal_#{product.id}"}
-          .header
-            = product.name
-          .content
-            .left
+      .ui.products.items
+        - @products.each do |product|
+          .product.item.ui.paper.element-item{'data-updatedAt' => product.updated_at.to_time.to_i, :class => product.tags.map{ |t| 'tag_' + t.name.gsub(/[!@#$%^&*()'",\.]/, '_') }.join(' ')}
+            .image{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
               %img{:src => product.image}
-            .right
+              - if product.provider
+                %a.ui.corner.label.provider
+                  .text= product.provider.name
+            .content
+              .name{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.name
               %p.description{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.description
               - if product.original_price
                 .original_money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
@@ -114,165 +79,201 @@
                   NT$
                   %span.price= product.price
                 - else
-                  %span.price 價格請洽詢，或直接下單
+                  價格請洽詢，或直接下單
               .tags
                 - product.tags.each do |tag|
                   %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
+              - if @can_order
+                .buy
+                  購買數量：
+                  .ui.input
+                    %input{:id => "order_#{product.id}", :name => "order[#{product.id}]", :placeholder => "數量", :type => "number", :min => "0", :max => "50", :step => ""}
+                    / .ui.icon.buttons
+                  .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
+                    %i.add.icon
+                  .ui.frameless.grey.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) - 1 ); updateForm();"}
+                    %i.minus.icon
               .extra
                 - if Setting['show_purchases'].to_s == 'true'
                   %span.purchases= product.orders.size
                   人買了這個
-            .bottom.specification= markdown_format product.specification
-          .actions
-            .ui.black.frameless.button
-              關閉
-            - if @can_order
-              .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
-                放入購物車
-  - if @can_order
-    .orders.w
-      .container.orders
-        .ui.order.paper.z-depth-2
-          .header
-            購物車
-            %a.ui.mini.red.frameless.button.filter-shopping-cart{href: 'javascript:void(0)'} 篩選－購物車內項目
+          .ui.product.modal.paper.z-depth-4.top{:class => "product_modal_#{product.id}"}
+            .header
+              = product.name
+            .content
+              .left
+                %img{:src => product.image}
+              .right
+                %p.description{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}= product.description
+                - if product.original_price
+                  .original_money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
+                    %span.cross
+                      NT$
+                      %span.original_price= product.original_price
+                .money{'onclick' => "$('.product_modal_#{product.id}').modal('show');"}
+                  - if !product.hide_price
+                    NT$
+                    %span.price= product.price
+                  - else
+                    價格請洽詢，或直接下單
+                .tags
+                  - product.tags.each do |tag|
+                    %a.ui.label.filter-toggle{"data-filter" => '.tag_' + tag.name.gsub(/[!@#$%^&*()'",\.]/, '_')}= tag.name
+                .extra
+                  - if Setting['show_purchases'].to_s == 'true'
+                    %span.purchases= product.orders.size
+                    人買了這個
+              .bottom.specification= markdown_format product.specification
+            .actions
+              .ui.black.frameless.button
+                關閉
+              - if @can_order
+                .ui.frameless.button{'onclick' => "$('#order_#{product.id}').val( parseInt($('#order_#{product.id}').val() || 0) + 1 ); updateForm();"}
+                  放入購物車
+    - if @can_order
+      .orders.w
+        .container.orders
+          .ui.order.paper.z-depth-2
+            .header
+              購物車
+              %a.ui.mini.red.frameless.button.filter-shopping-cart{href: 'javascript:void(0)'} 篩選－購物車內項目
 
-          .detail
-            %span.items-detail
-          .price
-            NT$
-            %span.total-price
-            - if Preference.order_consent.to_s != ''
-              %a.ui.massive.frameless.button{onclick: "$('#before_order_form').modal('show');"} 送出訂單
-            - else
-              = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
-    #before_order_form.ui.small.modal.paper.z-depth-4.top
-      .header
-        購買
-      .content
-        .ui.form
-          - if Preference.order_custom_column_1_name.to_s != ''
-            .inline.field
-              %label= Preference.order_custom_column_1_name
-              - if Preference.order_custom_column_1_options.to_s != ''
-                %select#order_custom_column_1_options.select2.select{name: "order_custom_column_1", style: "min-width: 300px;"}
-                  - JSON.parse(Preference.order_custom_column_1_options).each do |o|
-                    %option{value: o}= o
+            .detail
+              %span.items-detail
+            .price
+              NT$
+              %span.total-price
+              - if Preference.order_consent.to_s != ''
+                %a.ui.massive.frameless.button{onclick: "$('#before_order_form').modal('show');"} 送出訂單
               - else
-                %input{:name => 'order_custom_column_1', :type => "text"}
-            .inline.field
-              %label= Preference.order_custom_column_2_name
-              - if Preference.order_custom_column_2_options.to_s != ''
-                %select#order_custom_column_2_options.select2.select{name: "order_custom_column_2", style: "min-width: 300px;"}
-                  - JSON.parse(Preference.order_custom_column_2_options).each do |o|
-                    %option{value: o}= o
-              - else
-                %input{:name => 'order_custom_column_2', :type => "text"}
-        - if Preference.order_consent.to_s != ''
-          %p= Preference.order_consent.html_safe
-      .actions
-        .ui.frameless.black.button
-          取消
-        / .ui.frameless.l_button{oncilck: "$('#orders_form').submit();"}
-        /   回報付款資料
-        = submit_tag '送出訂單', class: 'ui frameless l_button', id: 'payment_report_form_submit'
-    :coffee
-      $(document).ready ->
+                = submit_tag '送出訂單', class: 'ui massive frameless button', :data => { :confirm => '確定購買?' }
+      #before_order_form.ui.small.modal.paper.z-depth-4.top
+        .header
+          購買
+        .content
+          .ui.form
+            - if Preference.order_custom_column_1_name.to_s != ''
+              .inline.field
+                %label= Preference.order_custom_column_1_name
+                - if Preference.order_custom_column_1_options.to_s != ''
+                  %select#order_custom_column_1_options.select2.select{name: "order_custom_column_1", style: "min-width: 300px;"}
+                    - JSON.parse(Preference.order_custom_column_1_options).each do |o|
+                      %option{value: o}= o
+                - else
+                  %input{:name => 'order_custom_column_1', :type => "text"}
+              .inline.field
+                %label= Preference.order_custom_column_2_name
+                - if Preference.order_custom_column_2_options.to_s != ''
+                  %select#order_custom_column_2_options.select2.select{name: "order_custom_column_2", style: "min-width: 300px;"}
+                    - JSON.parse(Preference.order_custom_column_2_options).each do |o|
+                      %option{value: o}= o
+                - else
+                  %input{:name => 'order_custom_column_2', :type => "text"}
+          - if Preference.order_consent.to_s != ''
+            %p= Preference.order_consent.html_safe
+        .actions
+          .ui.frameless.black.button
+            取消
+          / .ui.frameless.l_button{oncilck: "$('#orders_form').submit();"}
+          /   回報付款資料
+          = submit_tag '送出訂單', class: 'ui frameless l_button', id: 'payment_report_form_submit'
+      :coffee
+        $(document).ready ->
 
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 100
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 200
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 300
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 500
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 1000
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 1500
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 2000
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 3000
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 4000
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 5000
-        setTimeout ->
-          $(".ui.modal").appendTo(".container.products")
-          $(".ui.dimmer").remove()
-        , 6000
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 100
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 200
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 300
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 500
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 1000
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 1500
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 2000
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 3000
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 4000
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 5000
+          setTimeout ->
+            $(".ui.modal").appendTo(".container.products")
+            $(".ui.dimmer").remove()
+          , 6000
 
-:coffee
-  $(window).bind 'scroll', ->
-    b = $('.wrapper').height() - ($(window).scrollTop() + $(window).height())
-    if b < 40
-      $('.orders.w').css 'padding-bottom', (40-b) + 'px'
-    else
-      $('.orders.w').css 'padding-bottom', 0
-
-  window.ota = 0
-  window.updateForm = ->
-    clearTimeout(window.ota)
-    itemsArr = []
-    totalP = 0
-    orderD = {}
-    prevTotalP = $('.total-price').html()
-    $('.product.item').each ->
-      ci = $(this).find('.buy input')
-      ci.val(null) if ci.val() <= 0
-      c = ci.val()
-      orderD[ci.attr('id')] = c
-      if c > 0
-        $(this).addClass('active')
-        p = $(this).find('.price').html()
-        n = $(this).find('.name').html()
-        totalP += p*c
-        shoppingCartItem = '<div class="ui blue label">' + n + '<div class="detail">×' + c + '</div><i class="delete icon" onclick="$(\'#' + ci.attr('id') + '\').val(null); updateForm();"></i></div>'
-        itemsArr.push shoppingCartItem
+  :coffee
+    $(window).bind 'scroll', ->
+      b = $('.wrapper').height() - ($(window).scrollTop() + $(window).height())
+      if b < 40
+        $('.orders.w').css 'padding-bottom', (40-b) + 'px'
       else
-        $(this).removeClass('active')
-    $('.items-detail').html itemsArr.join(' <span>+</span> ')
-    $('.total-price').html totalP
-    if itemsArr.length > 0
-      $('.orders.w').addClass('active')
-    else
-      $('.orders.w').removeClass('active')
-    bakeCookie 'orderD', orderD
+        $('.orders.w').css 'padding-bottom', 0
 
-    #if prevTotalP != $('.total-price').html() and prevTotalP != '0'
-    #  window.ota = setTimeout ->
-    #    $('.orders.w .orders').transition('pulse')
-    #  , 360
+    window.ota = 0
+    window.updateForm = ->
+      clearTimeout(window.ota)
+      itemsArr = []
+      totalP = 0
+      orderD = {}
+      prevTotalP = $('.total-price').html()
+      $('.product.item').each ->
+        ci = $(this).find('.buy input')
+        ci.val(null) if ci.val() <= 0
+        c = ci.val()
+        orderD[ci.attr('id')] = c
+        if c > 0
+          $(this).addClass('active')
+          p = $(this).find('.price').html()
+          n = $(this).find('.name').html()
+          totalP += p*c
+          shoppingCartItem = '<div class="ui blue label">' + n + '<div class="detail">×' + c + '</div><i class="delete icon" onclick="$(\'#' + ci.attr('id') + '\').val(null); updateForm();"></i></div>'
+          itemsArr.push shoppingCartItem
+        else
+          $(this).removeClass('active')
+      $('.items-detail').html itemsArr.join(' <span>+</span> ')
+      $('.total-price').html totalP
+      if itemsArr.length > 0
+        $('.orders.w').addClass('active')
+      else
+        $('.orders.w').removeClass('active')
+      bakeCookie 'orderD', orderD
 
-  $('input').change ->
+      #if prevTotalP != $('.total-price').html() and prevTotalP != '0'
+      #  window.ota = setTimeout ->
+      #    $('.orders.w .orders').transition('pulse')
+      #  , 360
+
+    $('input').change ->
+      updateForm()
+
+    $('input').keyup ->
+      updateForm()
+
+    orderD = readCookie('orderD')
+    for k of orderD
+      $('#' + k).val(orderD[k])
     updateForm()
-
-  $('input').keyup ->
-    updateForm()
-
-  orderD = readCookie('orderD')
-  for k of orderD
-    $('#' + k).val(orderD[k])
-  updateForm()
