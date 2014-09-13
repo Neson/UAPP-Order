@@ -101,6 +101,7 @@ ActiveAdmin.register_page "Preference" do
       v = false if v.to_s == 'false'
       Preference[k] = v
     end
+    Rails.cache.clear
     redirect_to :back, :notice => "設定已更新"
   end
 end
