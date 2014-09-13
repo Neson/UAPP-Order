@@ -163,6 +163,7 @@
                       %option{value: o}= o
                 - else
                   %input{:name => 'order_custom_column_1', :type => "text"}
+            - if Preference.order_custom_column_2_name.to_s != ''
               .inline.field
                 %label= Preference.order_custom_column_2_name
                 - if Preference.order_custom_column_2_options.to_s != ''
