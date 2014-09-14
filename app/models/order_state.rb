@@ -4,4 +4,10 @@ class OrderState < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :staff
+  belongs_to :order
+
+  scope :payment_confirmeds, -> { where(action: 'payment_confirmed').order('created_at ASC') }
+  scope :payment_receiveds, -> { where(action: 'payment_received').order('created_at ASC') }
+  scope :delivereds, -> { where(action: 'delivered').order('created_at ASC') }
+  scope :issues, -> { where(action: 'issue').order('created_at ASC') }
 end
