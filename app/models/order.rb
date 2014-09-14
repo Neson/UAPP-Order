@@ -26,7 +26,7 @@ class Order < ActiveRecord::Base
   end
 
   def cancel(identity, oid)
-    if state == 'delivered'
+    if state == 'new'
       set_state(identity, oid, 'cancel', 'cancelled')
     else
       raise 'illegal action'

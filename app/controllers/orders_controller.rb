@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
     else
       @ordered = false
     end
-    @orders = current_user.orders.order('created_at desc')
+    @orders = current_user.orders.includes(:product).order('created_at desc')
   end
 
   def update_orders
