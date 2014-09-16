@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, :only => [:batch_create, :my_orders, :update_orders]
+  skip_before_filter :verify_authenticity_token
 
   def batch_create
     if can_order
