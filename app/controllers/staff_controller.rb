@@ -26,8 +26,8 @@ class StaffController < ApplicationController
   end
 
   def receive_payment_show
-    @user = User.where('student_id = ?', params[:sid]).first
-    @user = User.from_rfid(params[:sid]) if @user.to_s == ''
+    @user = User.where('student_id = ?', params[:sid].downcase).first
+    @user = User.from_rfid(params[:sid].downcase) if @user.to_s == ''
     if @user.to_s == ''
       flash[:alert] = '用戶不存在'
       redirect_to receive_payment_path
@@ -58,8 +58,8 @@ class StaffController < ApplicationController
   end
 
   def deliver_show
-    @user = User.where('student_id = ?', params[:sid]).first
-    @user = User.from_rfid(params[:sid]) if @user.to_s == ''
+    @user = User.where('student_id = ?', params[:sid].downcase).first
+    @user = User.from_rfid(params[:sid].downcase) if @user.to_s == ''
     if @user.to_s == ''
       flash[:alert] = '用戶不存在'
       redirect_to receive_payment_path
@@ -90,8 +90,8 @@ class StaffController < ApplicationController
   end
 
   def issue_show
-    @user = User.where('student_id = ?', params[:sid]).first
-    @user = User.from_rfid(params[:sid]) if @user.to_s == ''
+    @user = User.where('student_id = ?', params[:sid].downcase).first
+    @user = User.from_rfid(params[:sid].downcase) if @user.to_s == ''
     if @user.to_s == ''
       flash[:alert] = '用戶不存在'
       redirect_to receive_payment_path
