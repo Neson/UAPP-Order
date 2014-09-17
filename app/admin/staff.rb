@@ -32,7 +32,7 @@ ActiveAdmin.register Staff do
           action.created_at
         end
         column '操作訂單' do |action|
-          "#{auto_link action.order} (#{action.order.product.name}, NT$#{action.order.price})".html_safe
+          "#{auto_link action.order} (#{action.order && action.order.product && action.order.product.name}, NT$#{action.order && action.order.price})".html_safe
         end
         column '操作工作人員' do |action|
           auto_link action.staff
@@ -52,11 +52,11 @@ ActiveAdmin.register Staff do
           action.created_at
         end
         column '操作訂單' do |action|
-          "#{auto_link action.order} (#{action.order.product.name}, NT$#{action.order.price})".html_safe
+          "#{auto_link action.order} (#{action.order && action.order.product && action.order.product.name}, NT$#{action.order && action.order.price})".html_safe
         end
         column '金額' do |action|
-          total += action.order.price
-          "NT$ #{action.order.price}".html_safe
+          total += action.order.price if action.order
+          "NT$ #{action.order && action.order.price}".html_safe
         end
         column '操作工作人員' do |action|
           auto_link action.staff
@@ -78,7 +78,7 @@ ActiveAdmin.register Staff do
           action.created_at
         end
         column '操作訂單' do |action|
-          "#{auto_link action.order} (#{action.order.product.name}, NT$#{action.order.price})".html_safe
+          "#{auto_link action.order} (#{action.order && action.order.product && action.order.product.name}, NT$#{action.order && action.order.price})".html_safe
         end
         column '操作工作人員' do |action|
           auto_link action.staff
@@ -100,7 +100,7 @@ ActiveAdmin.register Staff do
           action.created_at
         end
         column '操作訂單' do |action|
-          "#{auto_link action.order} (#{action.order.product.name}, NT$#{action.order.price})".html_safe
+          "#{auto_link action.order} (#{action.order && action.order.product && action.order.product.name}, NT$#{action.order && action.order.price})".html_safe
         end
         column '操作工作人員' do |action|
           auto_link action.staff
