@@ -30,7 +30,7 @@ ActiveAdmin.register Provider do
           p.orders.count
         end
         column '已確認付款、未交貨訂單數量' do |p|
-          p.orders.where('state = ?', 'paied').count
+          p.orders.where('state = ?', 'paid').count
         end
       end
     end
