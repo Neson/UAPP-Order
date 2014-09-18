@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
+  before_filter :check_url
   before_filter :get_app_setting
   before_action :save_page_history
   before_action :login_control
@@ -50,6 +51,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def check_url
+    if !request.original_url.match(/#{Setting.app_url.gsub(/\/$/, '')}/)
+      redirect_to(Setting.app_url.gsub(/\/$/, '') + request.fullpath) && return
+    end
+  end
 
   def save_page_history
     (session[:page_history] ||= []).unshift request.fullpath
