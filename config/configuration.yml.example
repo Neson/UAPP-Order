@@ -17,6 +17,7 @@ defaults: &defaults
   mailgun_domain: <%= ENV["MAILGUN_DOMAIN"] %>
   google_analytics_id: <%= ENV["GOOGLE_ANALYTICS_ID"] %>
   newrelic_license_key: <%= ENV["NEWRELIC_LICENSE_KEY"] %>
+  newrelic_app_name: <%= ENV["NEWRELIC_APP_NAME"] %>
 
 production:
   <<: *defaults
