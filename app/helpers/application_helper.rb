@@ -17,15 +17,26 @@ module ApplicationHelper
   end
 
   def app_logo
-    if Preference.app_logo.to_s != ''
-      if Preference.app_logo.to_s.match(/^</)  # if SVG path
-        Preference.app_logo.to_s.html_safe
-      else
-        image_tag Preference.app_logo
+    if !Rails.cache.read("logo") || params['exc'] == "true"
+      site_logo = Rails.cache.read("uapp_data")['site_logo']
+      if site_logo.to_s != ''
+        if !site_logo.to_s.match(/^</) # if not SVG path
+          site_logo = image_tag(site_logo)
+        end
+        site_logo = site_logo + '<span>&nbsp; </span>'
       end
-    else
-      Setting.app_name
+      if Preference.app_logo.to_s != ''
+        if Preference.app_logo.to_s.match(/^</)  # if SVG path
+          logo = (site_logo + Preference.app_logo.to_s).html_safe
+        else
+          logo = (site_logo + image_tag(Preference.app_logo)).html_safe
+        end
+      else
+        logo = (site_logo + Setting.app_name).html_safe
+      end
+      Rails.cache.write("logo", logo, :expires_in => 1.days)
     end
+    Rails.cache.read("logo")
   end
 
   def site_announcement
