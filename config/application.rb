@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module NTUSTImOrder
+module UappOrder
   class Application < Rails::Application
 
     if File.file?("#{Rails.root.to_s}/config/database.yml")
