@@ -18,6 +18,9 @@ ActiveAdmin.register Order do
     column '訂購日期', :sortable => :created_at do |o|
       o.created_at
     end
+    column '狀態更新日期', :sortable => :updated_at do |o|
+      o.updated_at
+    end
     column '訂購者', :sortable => :user_id do |o|
       auto_link o.user
     end
