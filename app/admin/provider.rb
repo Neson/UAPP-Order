@@ -32,6 +32,9 @@ ActiveAdmin.register Provider do
         column '已確認付款、未交貨訂單數量' do |p|
           p.orders.where('state = ?', 'paid').count
         end
+        column '單價' do |p|
+          p.price
+        end
       end
     end
     active_admin_comments
