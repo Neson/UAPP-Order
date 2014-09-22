@@ -24,6 +24,8 @@ module ApplicationHelper
           site_logo = image_tag(site_logo)
         end
         site_logo = site_logo + '<span>&nbsp; </span>'
+      else
+        site_logo = ''
       end
       if Preference.app_logo.to_s != ''
         if Preference.app_logo.to_s.match(/^</)  # if SVG path
