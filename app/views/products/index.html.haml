@@ -257,7 +257,7 @@
             p = p.replace(/^less_then/, '')
             pType = 'relative'
           totalP += p*c
-          console.log p
+          # console.log p
           shoppingCartItem = '<div class="ui blue label">' + n + '<div class="detail">×' + c + '</div><i class="delete icon" onclick="$(\'#' + ci.attr('id') + '\').val(null); updateForm();"></i></div>'
           itemsArr.push shoppingCartItem
         else
@@ -288,3 +288,13 @@
     for k of orderD
       $('#' + k).val(orderD[k])
     updateForm()
+
+:javascript
+  $(document).ready(function() {
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+  });
