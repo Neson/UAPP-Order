@@ -65,6 +65,25 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def rollback(oid)
+    if Time.now < states.last.updated_at + 20.seconds &&
+      (state == 'paid' || state == 'delivered' || state == 'problem') &&
+      states.last.staff_id == oid
+      case states.last.action
+        when 'issue'
+          set_state('staff', oid, 'rollback', 'delivered')
+        # when 'payment_confirmed'
+        #   set_state('staff', oid, 'rollback', 'delivered')
+        when 'payment_received'
+          set_state('staff', oid, 'rollback', 'new')
+        when 'delivered'
+          set_state('staff', oid, 'rollback', 'paid')
+        end
+    else
+      raise 'illegal action'
+    end
+  end
+
   def exchange
     current_staff
   end

@@ -32,6 +32,11 @@
                 .or
                 = submit_tag '確認收到', class: 'ui purple button', :data => { :confirm => "確定收到來自 #{pr.account_number} 的 #{pr.amout} 元款項嗎？一旦確認即無法復原。" }
 
+:javascript
+  setTimeout(function() {
+    $('.toast-message .action').remove();
+  }, 10000);
+
 :coffee
   $(document).ready ->
     $('table.sortable').tablesort()

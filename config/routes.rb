@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get 'issue' => 'staff#issue'
     get 'issue/show' => 'staff#issue_show'
     post 'issue' => 'staff#issue_update'
+    post 'rollback' => 'staff#rollback'
   end
 
   # Example of regular route:
