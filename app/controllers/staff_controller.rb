@@ -32,7 +32,7 @@ class StaffController < ApplicationController
       flash[:alert] = '用戶不存在'
       redirect_to receive_payment_path
     else
-      @orders = @user.orders.where('state = ?', 'new')
+      @orders = @user.orders.where('state = ?', 'new').order('product_id asc')
     end
   end
 
@@ -64,7 +64,7 @@ class StaffController < ApplicationController
       flash[:alert] = '用戶不存在'
       redirect_to receive_payment_path
     else
-      @orders = @user.orders.where('state = ?', 'paid')
+      @orders = @user.orders.where('state = ?', 'paid').order('product_id asc')
     end
   end
 
@@ -96,7 +96,7 @@ class StaffController < ApplicationController
       flash[:alert] = '用戶不存在'
       redirect_to receive_payment_path
     else
-      @orders = @user.orders.where(['state = ?', 'delivered'])
+      @orders = @user.orders.where(['state = ?', 'delivered']).order('product_id asc')
     end
   end
 
