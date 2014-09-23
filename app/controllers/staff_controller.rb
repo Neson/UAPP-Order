@@ -10,9 +10,9 @@ class StaffController < ApplicationController
         action_amount = 0
         session[:staff_actions].each do |order_id|
           action_amount += 1
-          Order.find(order_id).rollback(current_staff.id)
+          Order.find(order_id).lock!.rollback(current_staff.id)
         end
-        flash[:notice] = "已復原 #{action_amount} 筆資料"
+        flash[:warning] = "已復原 #{action_amount} 筆資料"
       else
         flash[:alert] = "沒有可復原的操作"
       end
@@ -97,7 +97,7 @@ class StaffController < ApplicationController
           if v.to_s == '1'
             action_amount += 1
             session[:staff_actions].push k.to_i
-            Order.find(k.to_i).delivered(current_staff.id)
+            Order.find(k.to_i).lock!.delivered(current_staff.id)
           end
         end
         flash[:notice] = "<div class=\"action\"><form action=\"/staff/rollback\" method=\"post\"><input type=\"hidden\" name=\"authenticity_token\" value=\"#{form_authenticity_token}\"><input type=\"submit\" value=\"復原\"></form></div>#{action_amount} 筆訂單更新成功"
@@ -129,7 +129,7 @@ class StaffController < ApplicationController
         params[:order].each do |k, v|
           if v.to_s == '1'
             action_amount += 1
-            Order.find(k.to_i).issue(current_staff.id)
+            Order.find(k.to_i).lock!.issue(current_staff.id)
           end
         end
         flash[:notice] = "#{action_amount} 筆訂單已標記為「客服問題」"

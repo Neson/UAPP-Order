@@ -54,7 +54,7 @@ class OrdersController < ApplicationController
           params[:order].each do |k, v|
             if v.to_s == '1'
               action_amount += 1
-              current_user.orders.find(k.to_i).pay(current_user.id, pr.id)
+              current_user.orders.find(k.to_i, :lock => true).lock!.pay(current_user.id, pr.id)
             end
           end
         end
@@ -68,7 +68,7 @@ class OrdersController < ApplicationController
         params[:order].each do |k, v|
           if v.to_s == '1'
             action_amount += 1
-            current_user.orders.find(k.to_i).cancel('user', current_user.id)
+            current_user.orders.find(k.to_i).lock!.cancel('user', current_user.id)
           end
         end
       end
