@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   devise :omniauthable, :omniauth_providers => [:uapp]
   devise :timeoutable, :timeout_in => 30.minutes
 
+  validates :uid, uniqueness: true
+
   has_many :orders
 
   def avatar(size=100)
