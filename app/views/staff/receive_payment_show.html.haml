@@ -39,8 +39,6 @@
   $(document).ready ->
     $('table.sortable').tablesort()
 
-
-
   window.updateForm = ->
     amount = 0
     $('.list .item').each ->
@@ -51,3 +49,15 @@
     setTimeout updateForm, 100
 
   updateForm()
+
+:javascript
+  $(document).keyup(function(e) {
+    switch(e.keyCode) {
+      case 71:
+        $('.main form').submit();
+        break;
+      case 81:
+        history.back();
+        break;
+    }
+  });

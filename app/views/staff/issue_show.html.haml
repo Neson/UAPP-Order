@@ -38,3 +38,15 @@
 :coffee
   $(document).ready ->
     $('table.sortable').tablesort()
+
+:javascript
+  $(document).keyup(function(e) {
+    switch(e.keyCode) {
+      case 71:
+        $('.main form').submit();
+        break;
+      case 81:
+        history.back();
+        break;
+    }
+  });
