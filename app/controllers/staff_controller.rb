@@ -82,7 +82,7 @@ class StaffController < ApplicationController
     @user = User.from_rfid(params[:sid].downcase) if @user.to_s == ''
     if @user.to_s == ''
       flash[:alert] = '用戶不存在'
-      redirect_to receive_payment_path
+      redirect_to deliver_path
     else
       @orders = @user.orders.where('state = ?', 'paid').order('product_id asc')
     end
